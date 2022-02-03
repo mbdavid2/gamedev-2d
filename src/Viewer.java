@@ -128,10 +128,10 @@ public class Viewer extends JPanel {
 
 	private void drawBackground(Graphics g)
 	{
-		File TextureToLoad = new File("res/spacebackground.png");  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
+		File TextureToLoad = new File("res/exterior-parallaxBG1.png");  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
 		try {
 			Image myImage = ImageIO.read(TextureToLoad); 
-			 g.drawImage(myImage, 0,0, 1000, 1000, 0 , 0, 1000, 1000, null); 
+			 g.drawImage(myImage, 0, 0, 1280, 720, 0 , 0, 256, 144, null); 
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
