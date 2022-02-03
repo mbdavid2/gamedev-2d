@@ -75,15 +75,16 @@ public class MainWindow {
 	            canvas.requestFocusInWindow();   // making sure that the Canvas is in focus so keyboard input will be taking in .
 					startGame=true;
 				}});  
-	        startMenuButton.setBounds(400, 500, 200, 40); 
+	        startMenuButton.setBounds(540, 500, 200, 40); 
+//	        startMenuButton.setBackground(Color.BLUE);
 	        
 	        //loading background image 
-	        File BackroundToLoad = new File("res/startscreen.png");  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
+	        File BackroundToLoad = new File("res/exterior-parallaxBG1.v2.png");  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
 			try {
 				 
 				 BufferedImage myPicture = ImageIO.read(BackroundToLoad);
 				 BackgroundImageForStartMenu = new JLabel(new ImageIcon(myPicture));
-				 BackgroundImageForStartMenu.setBounds(0, 0, 1000, 1000);
+				 BackgroundImageForStartMenu.setBounds(0, 0, 1280, 720);
 				frame.add(BackgroundImageForStartMenu); 
 			}  catch (IOException e) { 
 				e.printStackTrace();
