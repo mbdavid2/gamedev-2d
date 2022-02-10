@@ -1,4 +1,5 @@
 package util;
+import level.GameLevel;
 import mvc.Controller;
 
 public class Player extends GameObject {
@@ -15,8 +16,19 @@ public class Player extends GameObject {
     	super(textureLocation, width, height, centre);
 	}
     
-    public boolean isColliding(GameObject lowerLevel, GameObject upperLevel)  {
-    	return this.getCentre().getY() < 525;
+    public boolean isOnAir(GameLevel gameLevel)  {
+    	// This should call gameLevel
+    	if (gameLevel.getPlayerOnUpper()) {
+    		GameObject upper = gameLevel.getUpperFloor();
+    		return this.getCentre().getY() + getHeight()/1.5 < upper.getCentre().getY() - upper.getHeight();
+    	}
+    	else {
+    		GameObject lower = gameLevel.getLowerFloor();
+//       		System.out.println("Player " + getCentre().getY());
+//    		System.out.println(lower.getCentre().getY() + " height: " + lower.getHeight());
+    		return this.getCentre().getY() + getHeight()/1.5 < lower.getCentre().getY() - lower.getHeight();
+    	}
+    	
     }
     
     public int getMovementDirection() {
@@ -27,11 +39,11 @@ public class Player extends GameObject {
 		return lastMovingDirection;
 	}
     
-    public void playerLogic(GameObject levelLower, GameObject levelUpper) {
+    public void playerLogic(GameLevel gameLevel) {
 		
 		// smoother animation is possible if we make a target position  // done but may try to change things for students  
 		 
-		//check for movement and if you fired a bullet 
+		//check for movement
 		// Implement gravity
 		movingDirection = 0;
 		if(Controller.getInstance().isKeyAPressed()){
@@ -69,7 +81,7 @@ public class Player extends GameObject {
 		
 		// Gravity
 		// TODO: use collision with floor instead of hardcoded coordinate
-		if (isColliding(levelLower, levelUpper)) {
+		if (isOnAir(gameLevel)) {
 			this.getCentre().ApplyVector(new Vector3f(0,-4,0));
 		}
 		else {

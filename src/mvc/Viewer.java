@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import level.GameLevel;
 import util.GameObject;
 
 
@@ -84,7 +85,6 @@ public class Viewer extends JPanel {
 		
 	}
 	
-	
 	public void paintComponent(Graphics g) {
 		
 		super.paintComponent(g);
@@ -145,7 +145,7 @@ public class Viewer extends JPanel {
 		File TextureToLoad = new File("res/exterior-parallaxBG1.png");  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
 		try {
 			Image myImage = ImageIO.read(TextureToLoad); 
-			 g.drawImage(myImage, 0, 0, 1280, 720, 0 , 0, 256, 144, null); 
+			 g.drawImage(myImage, 0, 0, getResWidth(), getResHeight(), 0 , 0, 256, 144, null); 
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -157,8 +157,12 @@ public class Viewer extends JPanel {
 		GameObject spikes = gameworld.getSpikes();
 		File TextureToLoad = new File(spikes.getTexture());  
 		try {
+			Integer height = getResHeight();
 			Image myImage = ImageIO.read(TextureToLoad);
-//			g.drawImage(myImage, 0, 0, 200, getResHeight(), 0, 0, 720, 720, null);
+			g.drawImage(myImage, 0, 0, 300, height/3, 0, 0, 500, 500, null);
+			g.drawImage(myImage, 0, height/3, 300, height*2/3, 0, 0, 500, 500, null);
+			g.drawImage(myImage, 0, height*2/3, 300, height, 0, 0, 500, 500, null);
+//			g.drawImage(myImage, 0, height*3/4, 300, height, 0, 0, 500, 500, null);
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -182,22 +186,28 @@ public class Viewer extends JPanel {
 	}
 	
 	private void drawLevel(Graphics g) {
-		GameObject level = gameworld.getLevel();
-		File TextureToLoad = new File(level.getTexture());  
+		GameLevel level = gameworld.getLevel();	
+		
 		try {
+			Integer height = getResHeight();
+			Integer width = getResWidth();
+			
 			// Lower level
+			File TextureToLoad = new File(level.getLowerFloor().getTexture());
 			Image myImageLower = ImageIO.read(TextureToLoad);
-			int floorHeight = getResHeight() - getResHeight()*5/6 - 35;
-			g.drawImage(myImageLower, 0, getResHeight()*5/6, getResWidth()/4, getResHeight(), 110, 0, 159, 15, null);
-			g.drawImage(myImageLower, getResWidth()/4, getResHeight()*5/6, getResWidth()*2/4, getResHeight(), 110, 0, 159, 15, null);
-			g.drawImage(myImageLower, getResWidth()*2/3, getResHeight()*5/6, getResWidth(), getResHeight(), 110, 0, 159, 15, null);
+			g.drawImage(myImageLower, 0, height*7/8, width, height, 0, 0, 312, 20, null);
+//			g.drawImage(myImageLower, getResWidth()/4, getResHeight()*5/6, getResWidth()*2/4, getResHeight(), 110, 0, 159, 15, null);
+//			g.drawImage(myImageLower, getResWidth()*2/3, getResHeight()*5/6, getResWidth(), getResHeight(), 110, 0, 159, 15, null);
 			
 			// Upper level
-			Image myImageUpper = ImageIO.read(TextureToLoad);
-			g.drawImage(myImageUpper, 0, getResHeight()/2 - floorHeight, getResWidth()/4, getResHeight()/2, 110, 32, 159, 45, null);
-			g.drawImage(myImageUpper, getResWidth()/4, getResHeight()/2 - floorHeight, getResWidth()*2/4, getResHeight()/2, 110, 32, 159, 45, null);
-			g.drawImage(myImageUpper, getResWidth()*2/3, getResHeight()/2 - floorHeight, getResWidth(), getResHeight()/2, 110, 32, 159, 45, null);
-			
+			TextureToLoad = new File(level.getUpperFloor().getTexture());
+			myImageLower = ImageIO.read(TextureToLoad);
+			g.drawImage(myImageLower, 0, height*3/8, width, height/2, 0, 0, 312, 20, null);
+//			Image myImageUpper = ImageIO.read(TextureToLoad);
+//			g.drawImage(myImageUpper, 0, getResHeight()/2 - floorHeight, getResWidth()/4, getResHeight()/2, 110, 32, 159, 45, null);
+//			g.drawImage(myImageUpper, getResWidth()/4, getResHeight()/2 - floorHeight, getResWidth()*2/4, getResHeight()/2, 110, 32, 159, 45, null);
+//			g.drawImage(myImageUpper, getResWidth()*2/3, getResHeight()/2 - floorHeight, getResWidth(), getResHeight()/2, 110, 32, 159, 45, null);
+//			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

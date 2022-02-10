@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import level.GameLevel;
+import level.LevelScreen;
 import util.GameObject;
 import util.Player;
 import util.Point3f;
@@ -34,10 +36,8 @@ SOFTWARE.
 public class Model {
 	
 	 private Player player;
-	 private GameObject levelLower;
-	 private GameObject levelUpper;
-	 private GameObject Spikes;
-	 private Controller controller = Controller.getInstance();
+	 private GameLevel gameLevel;
+	 
 	 private CopyOnWriteArrayList<GameObject> EnemiesList  = new CopyOnWriteArrayList<GameObject>();
 	 private CopyOnWriteArrayList<GameObject> BulletList  = new CopyOnWriteArrayList<GameObject>();
 	 private int Score=0; 
@@ -51,19 +51,24 @@ public class Model {
 		this.resWidth = resWidth;
 		this.resHeight = resHeight;
 		
+		createLevel();
+		
 		//Player 
-		player = new Player("res/characters_flip.png",70,70, new Point3f(640, floorLevel, 0));
-		//Enemies  starting with four 
+		player = new Player("res/characters_flip.png", 90, 90, new Point3f(this.resWidth/2, this.resHeight/2, 0));
 		
-		EnemiesList.add(new GameObject("res/UFO.png",50,50,new Point3f(((float)Math.random()*50+400 ),0,0))); 
-		EnemiesList.add(new GameObject("res/UFO.png",50,50,new Point3f(((float)Math.random()*50+500 ),0,0)));
-		EnemiesList.add(new GameObject("res/UFO.png",50,50,new Point3f(((float)Math.random()*100+500 ),0,0)));
-		EnemiesList.add(new GameObject("res/UFO.png",50,50,new Point3f(((float)Math.random()*100+400 ),0,0)));
+	}
+	
+	private void createLevel() {
+		ArrayList<LevelScreen> levelScreens = new ArrayList<LevelScreen>();
 		
-		levelLower = new GameObject("res/sheet.png", 1280, 200, new Point3f(640, floorLevel, 0));
+		GameObject lowerFloor = new GameObject("res/level/floorLower.png", 1280, resHeight/8, new Point3f(resWidth/2, resHeight, 0));
+		GameObject upperFloor= new GameObject("res/level/floorUpper.png", 1280, resHeight/8, new Point3f(resWidth/2, resHeight/2, 0));
+		GameObject spikes = new GameObject("res/Spikeslarge_nobg.png", 20, 20, new Point3f(0, floorLevel, 0));
 		
-		Spikes = new GameObject("res/Spikeslarge.png", 20, 20, new Point3f(640, floorLevel, 0));
-	    
+		LevelScreen levelScreen1 = new LevelScreen(lowerFloor, upperFloor, spikes);
+		levelScreens.add(levelScreen1);
+		
+		gameLevel = new GameLevel(levelScreens);
 	}
 	
 	public Integer getResWidth() {
@@ -121,7 +126,7 @@ public class Model {
 	}
 	
 	private void playerLogic() {
-		player.playerLogic(levelLower, levelUpper);	
+		player.playerLogic(gameLevel);	
 	}
 
 	private void CreateBullet() {
@@ -133,12 +138,12 @@ public class Model {
 		return player;
 	}
 
-	public GameObject getLevel() {
-		return levelLower;
+	public GameLevel getLevel() {
+		return gameLevel;
 	}
 	
 	public GameObject getSpikes() {
-		return Spikes;
+		return gameLevel.getSpikes();
 	}
 	
 	public int getMovementDirection() {
