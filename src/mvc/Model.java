@@ -66,7 +66,7 @@ public class Model {
 		
 		GameObject lowerFloor = new GameObject("res/level/floorLower.png", 1280, resHeight/8, new Point3f(resWidth/2, resHeight, 0));
 		GameObject upperFloor= new GameObject("res/level/floorUpper.png", 1280, resHeight/8, new Point3f(resWidth/2, resHeight/2, 0));
-		GameObject spikes = new GameObject("res/Spikeslarge_nobg.png", 20, 20, new Point3f(0, floorLevel, 0));
+		GameObject spikes = new GameObject("res/fire.png", 20, 20, new Point3f(0, floorLevel, 0));
 		portals1.add(new Portal(resWidth*4/8, resWidth*5/8));
 		portals1.add(new Portal(resWidth*1/8, resWidth*3/8));
 		
@@ -90,12 +90,15 @@ public class Model {
 	// This is the heart of the game , where the model takes in all the inputs ,decides the outcomes and then changes the model accordingly. 
 	public void gamelogic() 
 	{
-		// Player Logic first 
-		playerLogic(); 
+		if (!Controller.getInstance().getGameOver()) {
+			// Player Logic first 
+			playerLogic(); 
+			
+			spikesLogic();
 
-		// interactions between objects 
-		gameLogic(); 
-	   
+			// interactions between objects 
+			gameLogic(); 
+		}
 	}
 	
 	/*private void playerCollisionLogic() {
@@ -130,7 +133,10 @@ public class Model {
 	}
 
 	private void spikesLogic() {
-		
+		gameLevel.getSpikes().getCentre().ApplyVector(new Vector3f(0.5f, 0, 0));
+		if (gameLevel.getSpikes().getCentre().getX() > player.getCentre().getX()) {
+			Controller.getInstance().setGameOver();
+		}
 	}
 	
 	private void playerLogic() {

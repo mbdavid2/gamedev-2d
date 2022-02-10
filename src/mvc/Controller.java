@@ -37,6 +37,7 @@ public class Controller implements KeyListener {
 	   private static boolean KeyDPressed= false;
 	   private static boolean KeyWPressed= false;
 	   private static boolean KeySpacePressed= false;
+	   private static boolean gameOver = false;
 	   
 	   private static final Controller instance = new Controller();
 	   
@@ -70,6 +71,14 @@ public class Controller implements KeyListener {
 		
 	 // You can implement to keep moving while pressing the key here . 
 		
+	}
+	
+	public void setGameOver() {
+		gameOver = true;
+	}
+	
+	public boolean getGameOver() {
+		return gameOver;
 	}
 
 	@Override
