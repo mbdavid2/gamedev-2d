@@ -1,3 +1,4 @@
+package mvc;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -37,14 +38,10 @@ public class Model {
 	 private GameObject levelUpper;
 	 private GameObject Spikes;
 	 private Controller controller = Controller.getInstance();
-	 private  CopyOnWriteArrayList<GameObject> EnemiesList  = new CopyOnWriteArrayList<GameObject>();
-	 private  CopyOnWriteArrayList<GameObject> BulletList  = new CopyOnWriteArrayList<GameObject>();
+	 private CopyOnWriteArrayList<GameObject> EnemiesList  = new CopyOnWriteArrayList<GameObject>();
+	 private CopyOnWriteArrayList<GameObject> BulletList  = new CopyOnWriteArrayList<GameObject>();
 	 private int Score=0; 
 	 private final float floorLevel = 400;
-	 private boolean canJumpAgain = true;
-	 private int movingDirection = 0; // -1 left, 0 still, 1 right
-	 private int lastMovingDirection = 1;
-	 private int jumpingIterations = 0;
 	 
 	private Integer resWidth;
 	private Integer resHeight;
@@ -124,54 +121,7 @@ public class Model {
 	}
 	
 	private void playerLogic() {
-		
-		// smoother animation is possible if we make a target position  // done but may try to change things for students  
-		 
-		//check for movement and if you fired a bullet 
-		// Implement gravity
-		movingDirection = 0;
-		if(Controller.getInstance().isKeyAPressed()){
-			movingDirection = -1;
-			player.getCentre().ApplyVector( new Vector3f(-2,0,0)); 
-			lastMovingDirection = -1;
-		}
-		
-		if(Controller.getInstance().isKeyDPressed())
-		{
-			movingDirection = 1;
-			player.getCentre().ApplyVector( new Vector3f(2,0,0));
-			lastMovingDirection = 1;
-		}
-
-		/*if(Controller.getInstance().isKeyWPressed())
-		{
-			Player.getCentre().ApplyVector( new Vector3f(0,2,0));
-		}*/
-		
-		//if(Controller.getInstance().isKeySPressed()){Player.getCentre().ApplyVector( new Vector3f(0,-2,0));}
-//		System.out.println(jumpingIterations);
-		if(Controller.getInstance().isKeySpacePressed() && jumpingIterations == 0 && canJumpAgain)
-		{
-			canJumpAgain = false;
-			jumpingIterations = 15;
-			player.getCentre().ApplyVector( new Vector3f(0,3,0));
-			//CreateBullet();
-			Controller.getInstance().setKeySpacePressed(false);
-		}
-		else if (jumpingIterations > 0) {
-			jumpingIterations--;
-			player.getCentre().ApplyVector( new Vector3f(0,13,0));
-		}
-		
-		// Gravity
-		// TODO: use collision with floor instead of hardcoded coordinate
-		if (player.isColliding(levelLower, levelUpper)) {
-			player.getCentre().ApplyVector(new Vector3f(0,-4,0));
-		}
-		else {
-			canJumpAgain = true;
-		}
-		
+		player.playerLogic(levelLower, levelUpper);	
 	}
 
 	private void CreateBullet() {
@@ -192,11 +142,11 @@ public class Model {
 	}
 	
 	public int getMovementDirection() {
-		return movingDirection;
+		return player.getMovementDirection();
 	}
 	
 	public int getLastMovingDirection() {
-		return lastMovingDirection;
+		return player.getLastMovingDirection();
 	}
 	
 	public CopyOnWriteArrayList<GameObject> getEnemies() {
