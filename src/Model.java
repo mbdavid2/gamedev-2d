@@ -3,6 +3,7 @@ import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import util.GameObject;
+import util.Player;
 import util.Point3f;
 import util.Vector3f; 
 /*
@@ -31,21 +32,30 @@ SOFTWARE.
  */ 
 public class Model {
 	
-	 private  GameObject Player;
-	 private GameObject Level;
+	 private Player player;
+	 private GameObject levelLower;
+	 private GameObject levelUpper;
+	 private GameObject Spikes;
 	 private Controller controller = Controller.getInstance();
 	 private  CopyOnWriteArrayList<GameObject> EnemiesList  = new CopyOnWriteArrayList<GameObject>();
 	 private  CopyOnWriteArrayList<GameObject> BulletList  = new CopyOnWriteArrayList<GameObject>();
 	 private int Score=0; 
-	 private final float floorLevel = 500;
+	 private final float floorLevel = 400;
 	 private boolean canJumpAgain = true;
 	 private int movingDirection = 0; // -1 left, 0 still, 1 right
 	 private int lastMovingDirection = 1;
+	 private int jumpingIterations = 0;
+	 
+	private Integer resWidth;
+	private Integer resHeight;
 
-	public Model() {
-		 //setup game world 
+	public Model(Integer resWidth, Integer resHeight) {
+		//setup game world 
+		this.resWidth = resWidth;
+		this.resHeight = resHeight;
+		
 		//Player 
-		Player = new GameObject("res/characters_flip.png",70,70, new Point3f(640, floorLevel, 0));
+		player = new Player("res/characters_flip.png",70,70, new Point3f(640, floorLevel, 0));
 		//Enemies  starting with four 
 		
 		EnemiesList.add(new GameObject("res/UFO.png",50,50,new Point3f(((float)Math.random()*50+400 ),0,0))); 
@@ -53,8 +63,18 @@ public class Model {
 		EnemiesList.add(new GameObject("res/UFO.png",50,50,new Point3f(((float)Math.random()*100+500 ),0,0)));
 		EnemiesList.add(new GameObject("res/UFO.png",50,50,new Point3f(((float)Math.random()*100+400 ),0,0)));
 		
-		Level = new GameObject("res/sheet.png", 1280, 100, new Point3f(640, floorLevel, 0));
+		levelLower = new GameObject("res/sheet.png", 1280, 200, new Point3f(640, floorLevel, 0));
+		
+		Spikes = new GameObject("res/Spikeslarge.png", 20, 20, new Point3f(640, floorLevel, 0));
 	    
+	}
+	
+	public Integer getResWidth() {
+		 return this.resWidth;
+	}
+	
+	public Integer getResHeight() {
+		return this.resHeight;
 	}
 	
 	// This is the heart of the game , where the model takes in all the inputs ,decides the outcomes and then changes the model accordingly. 
@@ -62,14 +82,18 @@ public class Model {
 	{
 		// Player Logic first 
 		playerLogic(); 
-		// Enemy Logic next
-		enemyLogic();
-		// Bullets move next 
-		bulletLogic();
+
 		// interactions between objects 
 		gameLogic(); 
 	   
 	}
+	
+	/*private void playerCollisionLogic() {
+		int playerYPos = (int) Player.getCentre().getY();
+		int lowerLevel = 
+		if ()
+		
+	}*/
 
 	private void gameLogic() { 
 		
@@ -79,11 +103,11 @@ public class Model {
 		
 		//see if they hit anything 
 		// using enhanced for-loop style as it makes it alot easier both code wise and reading wise too 
-		for (GameObject temp : EnemiesList) 
+		/*for (GameObject temp : EnemiesList) 
 		{
 		for (GameObject Bullet : BulletList) 
 		{
-			if ( Math.abs(temp.getCentre().getX()- Bullet.getCentre().getX())< temp.getWidth() 
+			if (Math.abs(temp.getCentre().getX()- Bullet.getCentre().getX())< temp.getWidth() 
 				&& Math.abs(temp.getCentre().getY()- Bullet.getCentre().getY()) < temp.getHeight())
 			{
 				EnemiesList.remove(temp);
@@ -91,58 +115,14 @@ public class Model {
 				Score++;
 			}  
 		}
-		}
+		}*/
 		
 	}
 
-	private void enemyLogic() {
-		// TODO Auto-generated method stub
-		for (GameObject temp : EnemiesList) 
-		{
-		    // Move enemies 
-			  
-			temp.getCentre().ApplyVector(new Vector3f(0,-1,0));
-			 
-			 
-			//see if they get to the top of the screen ( remember 0 is the top 
-			if (temp.getCentre().getY()==900.0f)  // current boundary need to pass value to model 
-			{
-				EnemiesList.remove(temp);
-				
-				// enemies win so score decreased 
-				Score--;
-			} 
-		}
-		
-		if (EnemiesList.size()<2)
-		{
-			while (EnemiesList.size()<6)
-			{
-				EnemiesList.add(new GameObject("res/UFO.png",50,50,new Point3f(((float)Math.random()*1000),0,0))); 
-			}
-		}
-	}
-
-	private void bulletLogic() {
-		// TODO Auto-generated method stub
-		// move bullets 
-	  
-		for (GameObject temp : BulletList) 
-		{
-		    //check to move them
-			  
-			temp.getCentre().ApplyVector(new Vector3f(0,1,0));
-			//see if they hit anything 
-			
-			//see if they get to the top of the screen ( remember 0 is the top 
-			if (temp.getCentre().getY()==0)
-			{
-			 	BulletList.remove(temp);
-			} 
-		} 
+	private void spikesLogic() {
 		
 	}
-
+	
 	private void playerLogic() {
 		
 		// smoother animation is possible if we make a target position  // done but may try to change things for students  
@@ -152,14 +132,14 @@ public class Model {
 		movingDirection = 0;
 		if(Controller.getInstance().isKeyAPressed()){
 			movingDirection = -1;
-			Player.getCentre().ApplyVector( new Vector3f(-2,0,0)); 
+			player.getCentre().ApplyVector( new Vector3f(-2,0,0)); 
 			lastMovingDirection = -1;
 		}
 		
 		if(Controller.getInstance().isKeyDPressed())
 		{
 			movingDirection = 1;
-			Player.getCentre().ApplyVector( new Vector3f(2,0,0));
+			player.getCentre().ApplyVector( new Vector3f(2,0,0));
 			lastMovingDirection = 1;
 		}
 
@@ -169,19 +149,24 @@ public class Model {
 		}*/
 		
 		//if(Controller.getInstance().isKeySPressed()){Player.getCentre().ApplyVector( new Vector3f(0,-2,0));}
-		
-		if(Controller.getInstance().isKeySpacePressed() && canJumpAgain)
+//		System.out.println(jumpingIterations);
+		if(Controller.getInstance().isKeySpacePressed() && jumpingIterations == 0 && canJumpAgain)
 		{
 			canJumpAgain = false;
-			Player.getCentre().ApplyVector( new Vector3f(0,70,0));
+			jumpingIterations = 15;
+			player.getCentre().ApplyVector( new Vector3f(0,3,0));
 			//CreateBullet();
 			Controller.getInstance().setKeySpacePressed(false);
+		}
+		else if (jumpingIterations > 0) {
+			jumpingIterations--;
+			player.getCentre().ApplyVector( new Vector3f(0,13,0));
 		}
 		
 		// Gravity
 		// TODO: use collision with floor instead of hardcoded coordinate
-		if (Player.getCentre().getY() < floorLevel) {
-			Player.getCentre().ApplyVector( new Vector3f(0,-2,0));
+		if (player.isColliding(levelLower, levelUpper)) {
+			player.getCentre().ApplyVector(new Vector3f(0,-4,0));
 		}
 		else {
 			canJumpAgain = true;
@@ -190,16 +175,20 @@ public class Model {
 	}
 
 	private void CreateBullet() {
-		BulletList.add(new GameObject("res/Bullet.png",32,64,new Point3f(Player.getCentre().getX(),Player.getCentre().getY(),0.0f)));
+		BulletList.add(new GameObject("res/Bullet.png",32,64,new Point3f(player.getCentre().getX(),player.getCentre().getY(),0.0f)));
 		
 	}
 
 	public GameObject getPlayer() {
-		return Player;
+		return player;
 	}
 
 	public GameObject getLevel() {
-		return Level;
+		return levelLower;
+	}
+	
+	public GameObject getSpikes() {
+		return Spikes;
 	}
 	
 	public int getMovementDirection() {

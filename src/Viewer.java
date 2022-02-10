@@ -46,8 +46,16 @@ SOFTWARE.
 public class Viewer extends JPanel {
 	private long CurrentAnimationTime= 0; 
 	
-	Model gameworld =new Model(); 
+	Model gameworld = new Model(1280, 720); 
 	 
+	public Integer getResWidth() {
+		 return gameworld.getResWidth();
+	}
+	
+	public Integer getResHeight() {
+		return gameworld.getResHeight();
+	}
+	
 	public Viewer(Model World) {
 		this.gameworld=World;
 		// TODO Auto-generated constructor stub
@@ -96,7 +104,9 @@ public class Viewer extends JPanel {
 		drawPlayer(x, y, width, height, texture, g);
 		
 		// Draw level
-		drawLevel();
+		drawLevel(g);
+		
+		drawSpikes(g);
 		  
 		//Draw Bullets 
 		// change back 
@@ -142,6 +152,20 @@ public class Viewer extends JPanel {
 		}
 	}
 	
+	private void drawSpikes(Graphics g) {
+		GameObject spikes = gameworld.getSpikes();
+		File TextureToLoad = new File(spikes.getTexture());  
+		try {
+			Image myImage = ImageIO.read(TextureToLoad);
+//			g.drawImage(myImage, 0, 0, 200, getResHeight(), 0, 0, 720, 720, null);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 	private void drawBullet(int x, int y, int width, int height, String texture,Graphics g)
 	{
 		File TextureToLoad = new File(texture);  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
@@ -156,8 +180,27 @@ public class Viewer extends JPanel {
 		}
 	}
 	
-	private void drawLevel() {
+	private void drawLevel(Graphics g) {
 		GameObject level = gameworld.getLevel();
+		File TextureToLoad = new File(level.getTexture());  
+		try {
+			// Lower level
+			Image myImageLower = ImageIO.read(TextureToLoad);
+			int floorHeight = getResHeight() - getResHeight()*5/6 - 35;
+			g.drawImage(myImageLower, 0, getResHeight()*5/6, getResWidth()/4, getResHeight(), 110, 0, 159, 15, null);
+			g.drawImage(myImageLower, getResWidth()/4, getResHeight()*5/6, getResWidth()*2/4, getResHeight(), 110, 0, 159, 15, null);
+			g.drawImage(myImageLower, getResWidth()*2/3, getResHeight()*5/6, getResWidth(), getResHeight(), 110, 0, 159, 15, null);
+			
+			// Upper level
+			Image myImageUpper = ImageIO.read(TextureToLoad);
+			g.drawImage(myImageUpper, 0, getResHeight()/2 - floorHeight, getResWidth()/4, getResHeight()/2, 110, 32, 159, 45, null);
+			g.drawImage(myImageUpper, getResWidth()/4, getResHeight()/2 - floorHeight, getResWidth()*2/4, getResHeight()/2, 110, 32, 159, 45, null);
+			g.drawImage(myImageUpper, getResWidth()*2/3, getResHeight()/2 - floorHeight, getResWidth(), getResHeight()/2, 110, 32, 159, 45, null);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 
