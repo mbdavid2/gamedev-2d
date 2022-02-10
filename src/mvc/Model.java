@@ -5,6 +5,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import level.GameLevel;
 import level.LevelScreen;
+import level.Portal;
 import util.GameObject;
 import util.Player;
 import util.Point3f;
@@ -60,12 +61,15 @@ public class Model {
 	
 	private void createLevel() {
 		ArrayList<LevelScreen> levelScreens = new ArrayList<LevelScreen>();
+		ArrayList<Portal> portals1 = new ArrayList<Portal>();
 		
 		GameObject lowerFloor = new GameObject("res/level/floorLower.png", 1280, resHeight/8, new Point3f(resWidth/2, resHeight, 0));
 		GameObject upperFloor= new GameObject("res/level/floorUpper.png", 1280, resHeight/8, new Point3f(resWidth/2, resHeight/2, 0));
 		GameObject spikes = new GameObject("res/Spikeslarge_nobg.png", 20, 20, new Point3f(0, floorLevel, 0));
+		Portal portal = new Portal(resWidth*3/8, resWidth*4/8);
+		portals1.add(portal);
 		
-		LevelScreen levelScreen1 = new LevelScreen(lowerFloor, upperFloor, spikes);
+		LevelScreen levelScreen1 = new LevelScreen(lowerFloor, upperFloor, spikes, portals1);
 		levelScreens.add(levelScreen1);
 		
 		gameLevel = new GameLevel(levelScreens);

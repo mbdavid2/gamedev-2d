@@ -11,14 +11,20 @@ public class LevelScreen {
 	private boolean playerOnUpper = false;
 	
 	// private ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
-	// private ArrayList<Portal> portals = new ArrayList<portal>();
+	private ArrayList<Portal> portals = new ArrayList<Portal>();
 	
-	public LevelScreen(GameObject lowerFloor, GameObject upperFloor, GameObject spikes) {
+	public LevelScreen(GameObject lowerFloor, GameObject upperFloor, GameObject spikes, 
+					   ArrayList<Portal> portals) {
 		this.lowerFloor = lowerFloor;
 		this.upperFloor = upperFloor;
 		this.spikes = spikes;
+		this.portals = portals;
 	}
 	
+	public ArrayList<Portal> getPortals() {
+		return portals;
+	}
+		
 	public GameObject getSpikes() {
 		return spikes;
 	}
@@ -31,9 +37,12 @@ public class LevelScreen {
 		return upperFloor;
 	}
 	
-	public boolean playerCanSwitch() {
+	public boolean playerCanSwitch(float playerPosition) {
 		// Check whether the player can switch between upper and lower
-		return true;
+		for (Portal p : portals) {
+			if (p.isInPortalRange(playerPosition)) return true; 
+		}
+		return false;
 	}
 	
 	public boolean getPlayerOnUpper() {

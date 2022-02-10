@@ -30,9 +30,13 @@ public class GameLevel {
 		currentScreen = screens.get(currentScreenIndex);
 	}
 	
-	public boolean playerCanSwitch() {
+	public ArrayList<Portal> getPortals() {
+		return currentScreen.getPortals();
+	}
+	
+	public boolean playerCanSwitch(float playerPosition) {
 		// Check whether the player can switch between upper and lower
-		return currentScreen.playerCanSwitch();
+		return currentScreen.playerCanSwitch(playerPosition);
 	}
 	
 	public boolean getPlayerOnUpper() {

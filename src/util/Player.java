@@ -17,7 +17,6 @@ public class Player extends GameObject {
 	}
     
     public boolean isOnAir(GameLevel gameLevel)  {
-    	// This should call gameLevel
     	if (gameLevel.getPlayerOnUpper()) {
     		GameObject upper = gameLevel.getUpperFloor();
     		return this.getCentre().getY() + getHeight()/1.5 < upper.getCentre().getY() - upper.getHeight();
@@ -59,10 +58,23 @@ public class Player extends GameObject {
 			lastMovingDirection = 1;
 		}
 
-		/*if(Controller.getInstance().isKeyWPressed())
+		if(Controller.getInstance().isKeyWPressed())
 		{
-			Player.getCentre().ApplyVector( new Vector3f(0,2,0));
-		}*/
+			if (gameLevel.playerCanSwitch(this.getCentre().getX()) && !gameLevel.getPlayerOnUpper()) {
+				gameLevel.switchFloor();
+				float switchMovement = gameLevel.getUpperFloor().getCentre().getY();
+				this.getCentre().ApplyVector(new Vector3f(0, switchMovement, 0));
+			}
+		}
+		
+		if(Controller.getInstance().isKeySPressed())
+		{
+			if (gameLevel.playerCanSwitch(this.getCentre().getX()) && gameLevel.getPlayerOnUpper()) {
+				gameLevel.switchFloor();
+				float switchMovement = gameLevel.getUpperFloor().getCentre().getY();
+				this.getCentre().ApplyVector(new Vector3f(0, -switchMovement*2/3, 0));
+			}
+		}
 		
 		//if(Controller.getInstance().isKeySPressed()){Player.getCentre().ApplyVector( new Vector3f(0,-2,0));}
 //		System.out.println(jumpingIterations);

@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import level.GameLevel;
+import level.Portal;
 import util.GameObject;
 
 
@@ -47,6 +48,7 @@ SOFTWARE.
  */ 
 public class Viewer extends JPanel {
 	private long CurrentAnimationTime= 0; 
+	private final String portalTexture = "res/level/floorLower.png";
 	
 	Model gameworld = new Model(1280, 720); 
 	 
@@ -106,6 +108,7 @@ public class Viewer extends JPanel {
 		
 		// Draw level
 		drawLevel(g);
+		drawPortals(g);
 		
 		drawSpikes(g);
 		  
@@ -159,9 +162,9 @@ public class Viewer extends JPanel {
 		try {
 			Integer height = getResHeight();
 			Image myImage = ImageIO.read(TextureToLoad);
-			g.drawImage(myImage, 0, 0, 300, height/3, 0, 0, 500, 500, null);
-			g.drawImage(myImage, 0, height/3, 300, height*2/3, 0, 0, 500, 500, null);
-			g.drawImage(myImage, 0, height*2/3, 300, height, 0, 0, 500, 500, null);
+			g.drawImage(myImage, 0, 0, 300, height/3, 0, 0, 500, 475, null);
+			g.drawImage(myImage, 0, height/3, 300, height*2/3, 0, 0, 500, 475, null);
+			g.drawImage(myImage, 0, height*2/3, 300, height, 0, 0, 500, 475, null);
 //			g.drawImage(myImage, 0, height*3/4, 300, height, 0, 0, 500, 500, null);
 			
 		} catch (IOException e) {
@@ -179,6 +182,21 @@ public class Viewer extends JPanel {
 			//64 by 128 
 			 g.drawImage(myImage, x,y, x+width, y+height, 0 , 0, 63, 127, null); 
 			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void drawPortals(Graphics g) {
+		GameLevel level = gameworld.getLevel();	
+		
+		try {
+			File TextureToLoad = new File(portalTexture);
+			Image portalImage = ImageIO.read(TextureToLoad);
+			for (Portal p : level.getPortals()) {
+				g.drawImage(portalImage, p.getStart(), getResHeight()*3/8, p.getEnd(), getResHeight()/2, 90, 25, 0, 0, null);
+			}		
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
