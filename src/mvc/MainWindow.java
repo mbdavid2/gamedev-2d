@@ -52,7 +52,7 @@ public class MainWindow {
 	 private static JFrame frame = new JFrame("Game");   // Change to the name of your game 
 	 private static Model gameworld= new Model(resWidth, resHeight);
 	 private static Viewer canvas = new  Viewer(gameworld);
-	 private KeyListener Controller =new Controller()  ; 
+	 private KeyListener Controller = new Controller(); 
 	 private static   int TargetFPS = 100;
 	 private static boolean startGame= false; 
 	 private   JLabel BackgroundImageForStartMenu ;

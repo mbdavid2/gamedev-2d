@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import util.GameObject;
 
 public class GameLevel {
+	
+	private final Integer resWidth = 1280;
+	private final Integer resHeight = 720;
 	private Integer currentScreenIndex = 0;
 	
 	private ArrayList<LevelScreen> screens = new ArrayList<LevelScreen>();
@@ -12,6 +15,14 @@ public class GameLevel {
 	public GameLevel(ArrayList<LevelScreen> levelScreens) {
 		this.screens = levelScreens;
 		updateCurrentScreen();
+	}
+	
+	public Integer getResWidth() {
+		return resWidth;
+	}
+	
+	public Integer getResHeight() {
+		return resHeight;
 	}
 	
 	public GameObject getLowerFloor() {
@@ -34,7 +45,15 @@ public class GameLevel {
 		return currentScreen.getPortals();
 	}
 	
-	public boolean playerCanSwitch(float playerPosition) {
+	public ArrayList<GameObject> getObjects() {
+		return currentScreen.getObjects();
+	}
+	
+	public boolean isPositionInPortal(Integer portalIndex, float position) {
+		return currentScreen.isPositionInPortal(portalIndex, position);
+	}
+	
+	public Integer playerCanSwitch(float playerPosition) {
 		// Check whether the player can switch between upper and lower
 		return currentScreen.playerCanSwitch(playerPosition);
 	}

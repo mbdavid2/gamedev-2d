@@ -221,11 +221,16 @@ public class Viewer extends JPanel {
 			TextureToLoad = new File(level.getUpperFloor().getTexture());
 			myImageLower = ImageIO.read(TextureToLoad);
 			g.drawImage(myImageLower, 0, height*3/8, width, height/2, 0, 0, 312, 20, null);
-//			Image myImageUpper = ImageIO.read(TextureToLoad);
-//			g.drawImage(myImageUpper, 0, getResHeight()/2 - floorHeight, getResWidth()/4, getResHeight()/2, 110, 32, 159, 45, null);
-//			g.drawImage(myImageUpper, getResWidth()/4, getResHeight()/2 - floorHeight, getResWidth()*2/4, getResHeight()/2, 110, 32, 159, 45, null);
-//			g.drawImage(myImageUpper, getResWidth()*2/3, getResHeight()/2 - floorHeight, getResWidth(), getResHeight()/2, 110, 32, 159, 45, null);
-//			
+
+			for (GameObject obj : level.getObjects()) {
+				TextureToLoad = new File(obj.getTexture());
+				myImageLower = ImageIO.read(TextureToLoad);
+				int x = (int) obj.getCentre().getX();
+				int y = (int) obj.getCentre().getY();
+				g.drawImage(myImageLower, x, y, x + obj.getWidth(), y + obj.getHeight(), 0, 0, 10, 10, null);
+			}
+ 			
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

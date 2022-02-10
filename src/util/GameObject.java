@@ -31,19 +31,37 @@ public class GameObject {
 	private boolean hasTextured=false;
 	private String textureLocation; 
 	private String blanktexture="res/blankSprite.png";
+	private boolean isObjectOnUpper = false;
 	
 	public GameObject() {  
 		
 	}
 	
-    public GameObject(String textureLocation,int width,int height,Point3f centre) { 
+	public GameObject(String textureLocation,int width,int height,Point3f centre) { 
+   	 hasTextured=true;
+   	 this.textureLocation=textureLocation;
+   	 this.width=width;
+	 this.height=height;
+	 this.centre =centre;
+	}
+	
+    public GameObject(String textureLocation,int width,int height,Point3f centre, boolean isObjectOnUpper) { 
     	 hasTextured=true;
     	 this.textureLocation=textureLocation;
     	 this.width=width;
 		 this.height=height;
 		 this.centre =centre;
+		 this.isObjectOnUpper = isObjectOnUpper;
 	}
 
+    public boolean getObjectOnUpper() {
+    	return isObjectOnUpper;
+    }
+    
+    public void switchUpper() {
+    	isObjectOnUpper = !isObjectOnUpper;
+    }
+    
 	public Point3f getCentre() {
 		return centre;
 	}

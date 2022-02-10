@@ -12,8 +12,8 @@ public class Player extends GameObject {
 		
 	}
 	
-    public Player(String textureLocation,int width,int height,Point3f centre) { 
-    	super(textureLocation, width, height, centre);
+    public Player(String textureLocation,int width,int height,Point3f centre, boolean isObjectOnUpper) { 
+    	super(textureLocation, width, height, centre, isObjectOnUpper);
 	}
     
     public boolean isOnAir(GameLevel gameLevel)  {
@@ -38,6 +38,61 @@ public class Player extends GameObject {
 		return lastMovingDirection;
 	}
     
+	public void portalLogic(GameLevel gameLevel) {
+		// Going up
+		if(Controller.getInstance().isKeyWPressed())
+		{	
+			jumpingIterations = 0; // Cancel the jump
+			Integer portalIndex = gameLevel.playerCanSwitch(this.getCentre().getX());
+			
+			if (portalIndex != -1 && !gameLevel.getPlayerOnUpper()) {
+				float switchMovement = gameLevel.getUpperFloor().getCentre().getY();
+				// Switch the objects in the range
+				for (GameObject obj : gameLevel.getObjects()) {
+					if (gameLevel.isPositionInPortal(portalIndex, obj.getCentre().getX())) {
+						// Be sure that the object is on the opposite side
+						if (gameLevel.getPlayerOnUpper() != obj.getObjectOnUpper()) {
+							obj.getCentre().ApplyVector(new Vector3f(0, -switchMovement, 0));
+							obj.switchUpper();
+						}
+					}
+				}
+				
+				// Switch player 				
+				gameLevel.switchFloor();
+				this.getCentre().ApplyVector(new Vector3f(0, switchMovement, 0));
+			}
+		}
+		
+		
+		
+		// Going down
+		if(Controller.getInstance().isKeySPressed())
+		{
+			jumpingIterations = 0; // Cancel the jump
+			
+			Integer portalIndex = gameLevel.playerCanSwitch(this.getCentre().getX());
+			if (portalIndex != -1 && gameLevel.getPlayerOnUpper()) {	
+				float switchMovement = gameLevel.getUpperFloor().getCentre().getY();
+				
+				// Switch the objects in the range
+				for (GameObject obj : gameLevel.getObjects()) {
+					if (gameLevel.isPositionInPortal(portalIndex, obj.getCentre().getX())) {
+						// Be sure that the object is on the opposite side
+						if (gameLevel.getPlayerOnUpper() != obj.getObjectOnUpper()) {
+							obj.getCentre().ApplyVector(new Vector3f(0, switchMovement, 0));
+							obj.switchUpper();
+						}
+					}
+				}
+				
+				// Switch player
+				gameLevel.switchFloor();
+				this.getCentre().ApplyVector(new Vector3f(0, -switchMovement*3/4, 0));
+			}
+		}
+	}
+	
     public void playerLogic(GameLevel gameLevel) {
 		
 		// smoother animation is possible if we make a target position  // done but may try to change things for students  
@@ -58,23 +113,6 @@ public class Player extends GameObject {
 			lastMovingDirection = 1;
 		}
 
-		if(Controller.getInstance().isKeyWPressed())
-		{
-			if (gameLevel.playerCanSwitch(this.getCentre().getX()) && !gameLevel.getPlayerOnUpper()) {
-				gameLevel.switchFloor();
-				float switchMovement = gameLevel.getUpperFloor().getCentre().getY();
-				this.getCentre().ApplyVector(new Vector3f(0, switchMovement, 0));
-			}
-		}
-		
-		if(Controller.getInstance().isKeySPressed())
-		{
-			if (gameLevel.playerCanSwitch(this.getCentre().getX()) && gameLevel.getPlayerOnUpper()) {
-				gameLevel.switchFloor();
-				float switchMovement = gameLevel.getUpperFloor().getCentre().getY();
-				this.getCentre().ApplyVector(new Vector3f(0, -switchMovement*2/3, 0));
-			}
-		}
 		
 		//if(Controller.getInstance().isKeySPressed()){Player.getCentre().ApplyVector( new Vector3f(0,-2,0));}
 //		System.out.println(jumpingIterations);
@@ -82,23 +120,25 @@ public class Player extends GameObject {
 		{
 			canJumpAgain = false;
 			jumpingIterations = 15;
-			this.getCentre().ApplyVector( new Vector3f(0,3,0));
+			this.getCentre().ApplyVector( new Vector3f(0,15,0));
 			//CreateBullet();
 			Controller.getInstance().setKeySpacePressed(false);
 		}
 		else if (jumpingIterations > 0) {
 			jumpingIterations--;
-			this.getCentre().ApplyVector( new Vector3f(0,13,0));
+			this.getCentre().ApplyVector( new Vector3f(0,15,0));
 		}
 		
 		// Gravity
 		// TODO: use collision with floor instead of hardcoded coordinate
 		if (isOnAir(gameLevel)) {
-			this.getCentre().ApplyVector(new Vector3f(0,-4,0));
+			this.getCentre().ApplyVector(new Vector3f(0,-6,0));
 		}
 		else {
 			canJumpAgain = true;
 		}
+		
+		portalLogic(gameLevel);
 		
 	}
 }

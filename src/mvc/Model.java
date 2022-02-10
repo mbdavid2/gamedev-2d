@@ -55,21 +55,25 @@ public class Model {
 		createLevel();
 		
 		//Player 
-		player = new Player("res/characters_flip.png", 90, 90, new Point3f(this.resWidth/2, this.resHeight/2, 0));
+		player = new Player("res/characters_flip.png", 90, 90, new Point3f(this.resWidth/2, this.resHeight/2, 0), false);
 		
 	}
 	
 	private void createLevel() {
 		ArrayList<LevelScreen> levelScreens = new ArrayList<LevelScreen>();
 		ArrayList<Portal> portals1 = new ArrayList<Portal>();
+		ArrayList<GameObject> objects = new ArrayList<GameObject>();
 		
 		GameObject lowerFloor = new GameObject("res/level/floorLower.png", 1280, resHeight/8, new Point3f(resWidth/2, resHeight, 0));
 		GameObject upperFloor= new GameObject("res/level/floorUpper.png", 1280, resHeight/8, new Point3f(resWidth/2, resHeight/2, 0));
 		GameObject spikes = new GameObject("res/Spikeslarge_nobg.png", 20, 20, new Point3f(0, floorLevel, 0));
-		Portal portal = new Portal(resWidth*3/8, resWidth*4/8);
-		portals1.add(portal);
+		portals1.add(new Portal(resWidth*4/8, resWidth*5/8));
+		portals1.add(new Portal(resWidth*1/8, resWidth*3/8));
 		
-		LevelScreen levelScreen1 = new LevelScreen(lowerFloor, upperFloor, spikes, portals1);
+		GameObject crate = new GameObject("res/crate.png", 50, 50, new Point3f(resWidth*2/8, resHeight/2 - 110, 0), true);
+		objects.add(crate);
+		
+		LevelScreen levelScreen1 = new LevelScreen(lowerFloor, upperFloor, spikes, portals1, objects);
 		levelScreens.add(levelScreen1);
 		
 		gameLevel = new GameLevel(levelScreens);

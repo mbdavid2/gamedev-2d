@@ -12,17 +12,23 @@ public class LevelScreen {
 	
 	// private ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 	private ArrayList<Portal> portals = new ArrayList<Portal>();
+	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	
 	public LevelScreen(GameObject lowerFloor, GameObject upperFloor, GameObject spikes, 
-					   ArrayList<Portal> portals) {
+					   ArrayList<Portal> portals, ArrayList<GameObject> objects) {
 		this.lowerFloor = lowerFloor;
 		this.upperFloor = upperFloor;
 		this.spikes = spikes;
 		this.portals = portals;
+		this.objects = objects;
 	}
 	
 	public ArrayList<Portal> getPortals() {
 		return portals;
+	}
+	
+	public ArrayList<GameObject> getObjects() {
+		return objects;
 	}
 		
 	public GameObject getSpikes() {
@@ -37,12 +43,18 @@ public class LevelScreen {
 		return upperFloor;
 	}
 	
-	public boolean playerCanSwitch(float playerPosition) {
+	public Integer playerCanSwitch(float playerPosition) {
 		// Check whether the player can switch between upper and lower
+		Integer index = 0;
 		for (Portal p : portals) {
-			if (p.isInPortalRange(playerPosition)) return true; 
+			if (p.isInPortalRange(playerPosition)) return index;
+			index++;
 		}
-		return false;
+		return -1;
+	}
+	
+	public boolean isPositionInPortal(Integer portalIndex, float position) {
+		return portals.get(portalIndex).isInPortalRange(position);
 	}
 	
 	public boolean getPlayerOnUpper() {
