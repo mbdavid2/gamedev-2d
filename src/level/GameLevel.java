@@ -8,6 +8,7 @@ public class GameLevel {
 	private final Integer resWidth = 1280;
 	private final Integer resHeight = 720;
 	private Integer currentScreenIndex = 0;
+	private boolean doorEnabled = true;
 	
 	private ArrayList<LevelScreen> screens = new ArrayList<LevelScreen>();
 	private LevelScreen currentScreen;
@@ -41,8 +42,13 @@ public class GameLevel {
 		return currentScreen.getSpikes();
 	}
 	
+	public boolean isDoorEnabled() {
+		return doorEnabled;
+	}
+	
 	public void moveNextScreen() {
 		currentScreenIndex++;
+		doorEnabled = false;
 		updateCurrentScreen();
 	}
 	
@@ -51,6 +57,7 @@ public class GameLevel {
 	}
 	
 	private void updateCurrentScreen() {
+		System.out.println("Moving to screen " + currentScreenIndex + " out of " + screens.size());
 		currentScreen = screens.get(currentScreenIndex);
 	}
 	
@@ -60,6 +67,10 @@ public class GameLevel {
 	
 	public ArrayList<GameObject> getObjects() {
 		return currentScreen.getObjects();
+	}
+	
+	public ArrayList<GameObject> getObstacles() {
+		return currentScreen.getObstacles();
 	}
 	
 	public boolean isPositionInPortal(Integer portalIndex, float position) {

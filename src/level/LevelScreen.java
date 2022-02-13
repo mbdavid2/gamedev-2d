@@ -10,20 +10,21 @@ public class LevelScreen {
 	
 	private boolean playerOnUpper = false;
 	
-	// private ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
+	private ArrayList<GameObject> obstacles = new ArrayList<GameObject>();
 	private ArrayList<Portal> portals = new ArrayList<Portal>();
 	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	private GameObject door;
 	
 	public LevelScreen(GameObject lowerFloor, GameObject upperFloor, GameObject spikes, 
 					   ArrayList<Portal> portals, ArrayList<GameObject> objects,
-					   GameObject door) {
+					   ArrayList<GameObject> obstacles, GameObject door) {
 		this.lowerFloor = lowerFloor;
 		this.upperFloor = upperFloor;
 		this.spikes = spikes;
 		this.portals = portals;
 		this.objects = objects;
 		this.door = door;
+		this.obstacles = obstacles;
 	}
 	
 	public GameObject getDoor() {
@@ -36,6 +37,10 @@ public class LevelScreen {
 	
 	public ArrayList<GameObject> getObjects() {
 		return objects;
+	}
+	
+	public ArrayList<GameObject> getObstacles() {
+		return obstacles;
 	}
 		
 	public GameObject getSpikes() {

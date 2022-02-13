@@ -25,6 +25,7 @@ SOFTWARE.
  */ 
 //Modified from Graphics 3033J course point class  by Abey Campbell 
 
+import java.util.ArrayList;
 
 public class Point3f {
 
@@ -32,7 +33,7 @@ public class Point3f {
 	private float y;
 	private float z;
 	
-	private int boundary=1280;
+	private int boundary = 1280;
 	
 	
 	// default constructor
@@ -97,10 +98,38 @@ public class Point3f {
 		 setY(CheckBoundary(this.getY()-vector.getY()));
 		 setZ(CheckBoundary(this.getZ()-vector.getZ())); 
 	}
+	
+	public void ApplyVector(Vector3f vector, ArrayList<GameObject> obstacles, boolean playerOnUpper, int lastMovingDirection) { 
+		 setX(CheckBoundary(this.getX()+vector.getX(), obstacles, playerOnUpper, lastMovingDirection, this.getX()));
+		 setY(CheckBoundary(this.getY()-vector.getY()));
+		 setZ(CheckBoundary(this.getZ()-vector.getZ())); 
+	}
 
 	private float CheckBoundary(float f) {
 		if (f<0) f=0.0f;
 		if (f>boundary)f=(float) boundary;
+		return f;
+	}
+	
+	private float CheckBoundary(float f, ArrayList<GameObject> obstacles, boolean playerOnUpper, 
+								int lastMovingDirection, float current) {
+		if (f<0) f=0.0f;
+		if (f>boundary)f=(float) boundary;
+		
+		// Check for obstacles too
+		for (GameObject obj : obstacles) {
+//			System.out.println(obj.getObjectOnUpper() + " " + playerOnUpper);
+			if (obj.getObjectOnUpper() == playerOnUpper) {
+				int left = obj.getLeftBoundary();
+				int right = obj.getRightBoundary();
+//				System.out.println("Left: " + left);
+//				System.out.println("Right: " + right);
+//				System.out.println("Current: " + current);
+//				System.out.println("Prev: " + lastMovingDirection + " | F: " + f);
+				if (current <= left && f >= left && lastMovingDirection == 1) f = current;
+				if (current >= right && f <= right && lastMovingDirection == -1) f = current;
+			}
+		}
 		return f;
 	}
 

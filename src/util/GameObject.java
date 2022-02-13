@@ -80,6 +80,14 @@ public class GameObject {
 	public int getHeight() {
 		return height;
 	}
+	
+	public int getLeftBoundary() {
+		return (int) (centre.getX() - width);
+	}
+	
+	public int getRightBoundary() {
+		return (int) (centre.getX() + width/4);
+	}
 
 	public String getTexture() {
 		if(hasTextured) 

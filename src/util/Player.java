@@ -8,12 +8,18 @@ public class Player extends GameObject {
 	private int lastMovingDirection = 1;
 	private int jumpingIterations = 0;
 	 
+	private Point3f originalCenter;
+	
 	public Player() {  
-		
+
 	}
 	
     public Player(String textureLocation,int width,int height,Point3f centre, boolean isObjectOnUpper) { 
     	super(textureLocation, width, height, centre, isObjectOnUpper);
+    	
+    	this.originalCenter = new Point3f(centre.getX(), centre.getY(), centre.getZ());
+    	System.out.println(centre);
+    	System.out.println(this.originalCenter);
 	}
     
     public boolean isOnAir(GameLevel gameLevel)  {
@@ -45,15 +51,21 @@ public class Player extends GameObject {
 		return (getCentre().getX() > doorLeft && getCentre().getX() < doorRight);
 	}
 	
+	public void resetPlayer() {
+		System.out.println("hola " + this.originalCenter);
+		this.setCentre(this.originalCenter);
+	}
+	
 	public void doorLogic(GameLevel gameLevel) {
 		// Going up
-		if(Controller.getInstance().isKeyWPressed())
+		if(Controller.getInstance().isKeyWPressed() && gameLevel.isDoorEnabled())
 		{	
 			GameObject door = gameLevel.getDoor();
 			float doorLeft = door.getCentre().getX() - door.getWidth()/2;
 			float doorRight = door.getCentre().getX() + door.getWidth()/2;
 			if (getCentre().getX() > doorLeft && getCentre().getX() < doorRight) {
 				gameLevel.moveNextScreen();
+				resetPlayer();
 			}
 		}
 	}
@@ -120,14 +132,14 @@ public class Player extends GameObject {
 		movingDirection = 0;
 		if(Controller.getInstance().isKeyAPressed()){
 			movingDirection = -1;
-			this.getCentre().ApplyVector( new Vector3f(-3,0,0)); 
+			this.getCentre().ApplyVector( new Vector3f(-3,0,0), gameLevel.getObstacles(), gameLevel.getPlayerOnUpper(), lastMovingDirection); 
 			lastMovingDirection = -1;
 		}
 		
 		if(Controller.getInstance().isKeyDPressed())
 		{
 			movingDirection = 1;
-			this.getCentre().ApplyVector( new Vector3f(3,0,0));
+			this.getCentre().ApplyVector( new Vector3f(3,0,0), gameLevel.getObstacles(), gameLevel.getPlayerOnUpper(), lastMovingDirection);
 			lastMovingDirection = 1;
 		}
 

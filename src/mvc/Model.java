@@ -56,7 +56,7 @@ public class Model {
 		createLevel();
 		
 		//Player 
-		player = new Player("res/characters_flip.png", 90, 90, new Point3f(this.resWidth/4, this.resHeight/2, 0), false);
+		player = new Player("res/characters_flip.png", 90, 90, new Point3f(this.resWidth/4, this.resHeight*2/3, 0), false);
 		
 		Controller.getInstance().reset();
 		
@@ -65,7 +65,7 @@ public class Model {
 	public void reset() {
 		createLevel();
 		
-		//Player 
+		//Playe
 		player = new Player("res/characters_flip.png", 90, 90, new Point3f(this.resWidth/2, this.resHeight/2, 0), false);
 		
 		Controller.getInstance().reset();
@@ -89,6 +89,7 @@ public class Model {
 	public boolean gamelogic() 
 	{
 		// Player Logic first 
+//		System.out.println("Player now: " + player.getCentre());
 		playerLogic(); 
 			
 		spikesLogic();

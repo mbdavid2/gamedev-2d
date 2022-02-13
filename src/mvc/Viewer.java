@@ -216,6 +216,7 @@ public class Viewer extends JPanel {
 		try {
 			File TextureToLoad;
 			Image myImageLower;
+			
 			// Print the objects (crates, keys...)
 			for (GameObject obj : level.getObjects()) {
 				TextureToLoad = new File(obj.getTexture());
@@ -223,6 +224,15 @@ public class Viewer extends JPanel {
 				int x = (int) obj.getCentre().getX();
 				int y = (int) obj.getCentre().getY();
 				g.drawImage(myImageLower, x, y, x + obj.getWidth(), y + obj.getHeight(), 0, 0, 10, 10, null);
+			}
+			
+			// Print the walls/obstacles
+			for (GameObject obj : level.getObstacles()) {
+				TextureToLoad = new File(obj.getTexture());
+				myImageLower = ImageIO.read(TextureToLoad);
+				int x = (int) obj.getCentre().getX() - obj.getWidth()/2;
+				int y = (int) obj.getCentre().getY() - obj.getHeight()/2;
+				g.drawImage(myImageLower, x, y, x + obj.getWidth(), y + obj.getHeight(), 0, 0, 23, 46, null);
 			}
 			
 			Integer height = getResHeight();
