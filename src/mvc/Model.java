@@ -107,7 +107,7 @@ public class Model {
 		player.playerLogic(gameLevel);	
 	}
 
-	public GameObject getPlayer() {
+	public Player getPlayer() {
 		return player;
 	}
 

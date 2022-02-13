@@ -38,6 +38,13 @@ public class Player extends GameObject {
 		return lastMovingDirection;
 	}
 	
+	public boolean isWithinDoor(GameLevel gamelevel) {
+		GameObject door = gamelevel.getDoor();
+		float doorLeft = door.getCentre().getX() - door.getWidth()/2;
+		float doorRight = door.getCentre().getX() + door.getWidth()/2;
+		return (getCentre().getX() > doorLeft && getCentre().getX() < doorRight);
+	}
+	
 	public void doorLogic(GameLevel gameLevel) {
 		// Going up
 		if(Controller.getInstance().isKeyWPressed())

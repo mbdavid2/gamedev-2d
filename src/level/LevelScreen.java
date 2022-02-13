@@ -60,6 +60,10 @@ public class LevelScreen {
 		return -1;
 	}
 	
+	public Portal getPortal(Integer portalIndex) {
+		return portals.get(portalIndex);
+	}
+	
 	public boolean isPositionInPortal(Integer portalIndex, float position) {
 		return portals.get(portalIndex).isInPortalRange(position);
 	}

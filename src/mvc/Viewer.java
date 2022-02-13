@@ -104,28 +104,13 @@ public class Viewer extends JPanel {
 		drawBackground(g);
 		
 		// Draw level
+		drawDoor(g);
 		drawLevel(g);
 		drawPortals(g);
 		drawSpikes(g);
 		
 		//Draw player
 		drawPlayer(x, y, width, height, texture, g);
-	}
-	
-	private void drawEnemies(int x, int y, int width, int height, String texture, Graphics g) {
-		File TextureToLoad = new File(texture);  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
-		try {
-			Image myImage = ImageIO.read(TextureToLoad);
-			//The spirte is 32x32 pixel wide and 4 of them are placed together so we need to grab a different one each time 
-			//remember your training :-) computer science everything starts at 0 so 32 pixels gets us to 31  
-			int currentPositionInAnimation= ((int) (CurrentAnimationTime%4 )*32); //slows down animation so every 10 frames we get another frame so every 100ms 
-			g.drawImage(myImage, x,y, x+width, y+height, currentPositionInAnimation  , 0, currentPositionInAnimation+31, 32, null); 
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-		
 	}
 
 	private void drawBackground(Graphics g)
@@ -166,21 +151,7 @@ public class Viewer extends JPanel {
 		}
 		
 	}
-	
-	private void drawBullet(int x, int y, int width, int height, String texture,Graphics g)
-	{
-		File TextureToLoad = new File(texture);  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
-		try {
-			Image myImage = ImageIO.read(TextureToLoad); 
-			//64 by 128 
-			 g.drawImage(myImage, x,y, x+width, y+height, 0 , 0, 63, 127, null); 
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
+		
 	private void drawPortals(Graphics g) {
 		GameLevel level = gameworld.getLevel();	
 		
@@ -189,12 +160,55 @@ public class Viewer extends JPanel {
 			Image portalImage = ImageIO.read(TextureToLoad);
 			for (Portal p : level.getPortals()) {
 				g.drawImage(portalImage, p.getStart(), getResHeight()*3/8, p.getEnd(), getResHeight()/2, 90, 25, 0, 0, null);
-			}		
+			}
+			
+			// Print button prompt if first level
+			if (level.getCurrentIndex() == 0) {
+				Integer portalIndex = level.playerCanSwitch(gameworld.getPlayer().getCentre().getX());
+				if (portalIndex != -1) {
+					Portal p = level.getPortal(portalIndex);
+					TextureToLoad = new File("res/w_key_bg.png");
+					portalImage = ImageIO.read(TextureToLoad);
+					Integer portalCenter = (int) (p.getStart() + (p.getEnd() - p.getStart())/2);
+					float height = (getResHeight()/2 - getResHeight()*3/8);
+					Integer xStart = (int) (portalCenter - height/4);
+					Integer xEnd = (int) (portalCenter + height/4);
+					height = xEnd - xStart;
+					g.drawImage(portalImage, xStart, (int) (getResHeight()*3/8 + height/2) , xEnd, (int) (getResHeight()/2 - height/2), 0, 0, 210, 189, null);
+				}
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
+	private void drawDoor(Graphics g) {
+		GameLevel level = gameworld.getLevel();	
+		
+		try {
+			// Print the door
+			GameObject door = level.getDoor();
+			File TextureToLoad = new File(door.getTexture());
+			Image myImageLower = ImageIO.read(TextureToLoad);
+			int x = (int) door.getCentre().getX();
+			int y = (int) door.getCentre().getY();
+			g.drawImage(myImageLower, x, y, x + door.getWidth(), y + door.getHeight(), 0, 0, 57, 77, null);
+			
+			// Print button prompt if first level
+			if (level.getCurrentIndex() == 0) {
+				if (gameworld.getPlayer().isWithinDoor(level)) {
+					TextureToLoad = new File("res/level/doorW.png");
+					myImageLower = ImageIO.read(TextureToLoad);
+					g.drawImage(myImageLower, x, y, x + door.getWidth(), y + door.getHeight(), 0, 0, 57, 77, null);
+				}
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	
 	private void drawLevel(Graphics g) {
 		GameLevel level = gameworld.getLevel();
@@ -210,14 +224,6 @@ public class Viewer extends JPanel {
 				int y = (int) obj.getCentre().getY();
 				g.drawImage(myImageLower, x, y, x + obj.getWidth(), y + obj.getHeight(), 0, 0, 10, 10, null);
 			}
-			
-			// Print the door
-			GameObject door = level.getDoor();
-			TextureToLoad = new File(door.getTexture());
-			myImageLower = ImageIO.read(TextureToLoad);
-			int x = (int) door.getCentre().getX();
-			int y = (int) door.getCentre().getY();
-			g.drawImage(myImageLower, x, y, x + door.getWidth(), y + door.getHeight(), 0, 0, 57, 77, null);
 			
 			Integer height = getResHeight();
 			Integer width = getResWidth();

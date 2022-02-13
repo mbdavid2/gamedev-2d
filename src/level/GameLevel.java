@@ -12,6 +12,10 @@ public class GameLevel {
 	private ArrayList<LevelScreen> screens = new ArrayList<LevelScreen>();
 	private LevelScreen currentScreen;
 	
+	public Integer getCurrentIndex() {
+		return currentScreenIndex;
+	}
+	
 	public GameLevel(ArrayList<LevelScreen> levelScreens) {
 		this.screens = levelScreens;
 		updateCurrentScreen();
@@ -40,6 +44,10 @@ public class GameLevel {
 	public void moveNextScreen() {
 		currentScreenIndex++;
 		updateCurrentScreen();
+	}
+	
+	public Portal getPortal(Integer portalIndex) {
+		return currentScreen.getPortal(portalIndex);
 	}
 	
 	private void updateCurrentScreen() {
