@@ -73,6 +73,10 @@ public class Controller implements KeyListener {
 		
 	}
 	
+	public void reset() {
+		gameOver = false;
+	}
+	
 	public void setGameOver() {
 		gameOver = true;
 	}

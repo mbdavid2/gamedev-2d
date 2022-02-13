@@ -57,6 +57,17 @@ public class Model {
 		//Player 
 		player = new Player("res/characters_flip.png", 90, 90, new Point3f(this.resWidth/2, this.resHeight/2, 0), false);
 		
+		Controller.getInstance().reset();
+		
+	}
+	
+	public void reset() {
+		createLevel();
+		
+		//Player 
+		player = new Player("res/characters_flip.png", 90, 90, new Point3f(this.resWidth/2, this.resHeight/2, 0), false);
+		
+		Controller.getInstance().reset();
 	}
 	
 	private void createLevel() {
@@ -88,64 +99,25 @@ public class Model {
 	}
 	
 	// This is the heart of the game , where the model takes in all the inputs ,decides the outcomes and then changes the model accordingly. 
-	public void gamelogic() 
+	public boolean gamelogic() 
 	{
-		if (!Controller.getInstance().getGameOver()) {
-			// Player Logic first 
-			playerLogic(); 
+		// Player Logic first 
+		playerLogic(); 
 			
-			spikesLogic();
-
-			// interactions between objects 
-			gameLogic(); 
-		}
+		spikesLogic();
+		return Controller.getInstance().getGameOver();
 	}
-	
-	/*private void playerCollisionLogic() {
-		int playerYPos = (int) Player.getCentre().getY();
-		int lowerLevel = 
-		if ()
-		
-	}*/
 
-	private void gameLogic() { 
-		
-		
-		// this is a way to increment across the array list data structure 
-
-		
-		//see if they hit anything 
-		// using enhanced for-loop style as it makes it alot easier both code wise and reading wise too 
-		/*for (GameObject temp : EnemiesList) 
-		{
-		for (GameObject Bullet : BulletList) 
-		{
-			if (Math.abs(temp.getCentre().getX()- Bullet.getCentre().getX())< temp.getWidth() 
-				&& Math.abs(temp.getCentre().getY()- Bullet.getCentre().getY()) < temp.getHeight())
-			{
-				EnemiesList.remove(temp);
-				BulletList.remove(Bullet);
-				Score++;
-			}  
-		}
-		}*/
-		
-	}
 
 	private void spikesLogic() {
 		gameLevel.getSpikes().getCentre().ApplyVector(new Vector3f(0.5f, 0, 0));
-		if (gameLevel.getSpikes().getCentre().getX() > player.getCentre().getX()) {
+		if (gameLevel.getSpikes().getCentre().getX() > player.getCentre().getX() - player.getWidth()/2) {
 			Controller.getInstance().setGameOver();
 		}
 	}
 	
 	private void playerLogic() {
 		player.playerLogic(gameLevel);	
-	}
-
-	private void CreateBullet() {
-		BulletList.add(new GameObject("res/Bullet.png",32,64,new Point3f(player.getCentre().getX(),player.getCentre().getY(),0.0f)));
-		
 	}
 
 	public GameObject getPlayer() {

@@ -133,8 +133,8 @@ public class Viewer extends JPanel {
 			Image myImage = ImageIO.read(TextureToLoad);
 			//The spirte is 32x32 pixel wide and 4 of them are placed together so we need to grab a different one each time 
 			//remember your training :-) computer science everything starts at 0 so 32 pixels gets us to 31  
-			int currentAnimation= ((int) (CurrentAnimationTime%4 )*32); //slows down animation so every 10 frames we get another frame so every 100ms 
-			g.drawImage(myImage, x,y, x+width, y+height, currentAnimation  , 0, currentAnimation+31, 32, null); 
+			int currentPositionInAnimation= ((int) (CurrentAnimationTime%4 )*32); //slows down animation so every 10 frames we get another frame so every 100ms 
+			g.drawImage(myImage, x,y, x+width, y+height, currentPositionInAnimation  , 0, currentPositionInAnimation+31, 32, null); 
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -162,18 +162,18 @@ public class Viewer extends JPanel {
 		try {
 			Integer height = getResHeight();
 			Image myImage = ImageIO.read(TextureToLoad);
-			int currentAnimation = ((int) ((CurrentAnimationTime%20)/10))*64;
+			int currentPositionInAnimation = ((int) ((CurrentAnimationTime%20)/10))*64;
 			
 			int xStart = -25 + (int)spikes.getCentre().getX();
 			int xEnd = 175 + (int)spikes.getCentre().getX();
 
-			g.drawImage(myImage, xStart, 0 - height/16, xEnd, height/4 - height/16, 0, currentAnimation, 64, currentAnimation + 64, null);
-			g.drawImage(myImage, xStart, 0 + height/8 - height/16, xEnd, height/4 + height/8  - height/16, 0, currentAnimation, 64, currentAnimation + 64, null);
-			g.drawImage(myImage, xStart, height/4 - height/16, xEnd, height/2 - height/16, 0, currentAnimation, 64, currentAnimation + 64, null);
+			g.drawImage(myImage, xStart, 0 - height/16, xEnd, height/4 - height/16, 0, currentPositionInAnimation, 64, currentPositionInAnimation + 64, null);
+			g.drawImage(myImage, xStart, 0 + height/8 - height/16, xEnd, height/4 + height/8  - height/16, 0, currentPositionInAnimation, 64, currentPositionInAnimation + 64, null);
+			g.drawImage(myImage, xStart, height/4 - height/16, xEnd, height/2 - height/16, 0, currentPositionInAnimation, 64, currentPositionInAnimation + 64, null);
 			
-			g.drawImage(myImage, xStart, height/2, xEnd, height*3/4, 0, currentAnimation, 64, currentAnimation + 64, null);
-			g.drawImage(myImage, xStart, height/2 + height/8, xEnd, height*3/4 + height/8, 0, currentAnimation, 64, currentAnimation + 64, null);
-			g.drawImage(myImage, xStart, height*3/4, xEnd, height, 0, currentAnimation, 64, currentAnimation + 64, null);
+			g.drawImage(myImage, xStart, height/2, xEnd, height*3/4, 0, currentPositionInAnimation, 64, currentPositionInAnimation + 64, null);
+			g.drawImage(myImage, xStart, height/2 + height/8, xEnd, height*3/4 + height/8, 0, currentPositionInAnimation, 64, currentPositionInAnimation + 64, null);
+			g.drawImage(myImage, xStart, height*3/4, xEnd, height, 0, currentPositionInAnimation, 64, currentPositionInAnimation + 64, null);
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -255,14 +255,14 @@ public class Viewer extends JPanel {
 			//The spirte is 32x32 pixel wide and 4 of them are placed together so we need to grab a different one each time 
 			//remember your training :-) computer science everything starts at 0 so 32 pixels gets us to 31  
 			if (direction == 1 || direction == 0 && lastDirection == 1) {
-				int currentAnimation= ((int) ((CurrentAnimationTime%40)/10))*32; //slows down animation so every 10 frames we get another frame so every 100ms 
-				if (direction == 0) currentAnimation = 0;
-				g.drawImage(myImage, x,y, x+width, y+height, currentAnimation, 0, currentAnimation + 31, 32, null); 
+				int currentPositionInAnimation= ((int) ((CurrentAnimationTime%40)/10))*32; //slows down animation so every 10 frames we get another frame so every 100ms 
+				if (direction == 0) currentPositionInAnimation = 0;
+				g.drawImage(myImage, x,y, x+width, y+height, currentPositionInAnimation, 0, currentPositionInAnimation + 31, 32, null); 
 			}
 			else if (direction == -1 || direction == 0 && lastDirection == -1) {
-				int currentAnimation= ((int) ((CurrentAnimationTime%40)/10))*32; //slows down animation so every 10 frames we get another frame so every 100ms 
-				if (direction == 0) currentAnimation = 0;
-				g.drawImage(myImage, x,y, x+width, y+height, currentAnimation, 96, currentAnimation + 31, 128, null); 
+				int currentPositionInAnimation= ((int) ((CurrentAnimationTime%40)/10))*32; //slows down animation so every 10 frames we get another frame so every 100ms 
+				if (direction == 0) currentPositionInAnimation = 0;
+				g.drawImage(myImage, x,y, x+width, y+height, currentPositionInAnimation, 96, currentPositionInAnimation + 31, 128, null); 
 			}			
 			
 		} catch (IOException e) {

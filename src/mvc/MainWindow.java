@@ -56,7 +56,8 @@ public class MainWindow {
 	 private static   int TargetFPS = 100;
 	 private static boolean startGame= false; 
 	 private   JLabel BackgroundImageForStartMenu ;
-	  
+	 private static String buttonMessage = "Start Game";
+		
 	public MainWindow() {
 	        frame.setSize(resWidth, resHeight);  // you can customise this later and adapt it to change on size.  
 	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   //If exit // you can modify with your way of quitting , just is a template.
@@ -67,7 +68,7 @@ public class MainWindow {
 		      canvas.setVisible(false);   // this will become visible after you press the key. 
 		          
 		       
-	        JButton startMenuButton = new JButton("Start Game");  // start button 
+	        JButton startMenuButton = new JButton(buttonMessage);  // start button 
 	        startMenuButton.addActionListener(new ActionListener()
 	           { 
 				@Override
@@ -94,14 +95,16 @@ public class MainWindow {
 				e.printStackTrace();
 			}   
 			 
-	         frame.add(startMenuButton);  
+	       frame.add(startMenuButton);  
 	       frame.setVisible(true);   
 	}
 
 	public static void main(String[] args) {
-		MainWindow hello = new MainWindow();  //sets up environment 
+		MainWindow hello = new MainWindow();  //sets up environment
+		boolean gameOver = false;
 		while(true)   //not nice but remember we do just want to keep looping till the end.  // this could be replaced by a thread but again we want to keep things simple 
-		{ 
+		{
+			
 			//swing has timer class to help us time this but I'm writing my own, you can of course use the timer, but I want to set FPS and display it 
 			
 			int TimeBetweenFrames =  1000 / TargetFPS;
@@ -111,34 +114,48 @@ public class MainWindow {
 		 while (FrameCheck > System.currentTimeMillis()){} 
 			
 			
-			if(startGame)
-				 {
-				 gameloop();
-				 }
+			if(startGame && !gameOver) {
+				gameOver = gameloop();
+			}
 			
 			//UNIT test to see if framerate matches 
-		 UnitTests.CheckFrameRate(System.currentTimeMillis(),FrameCheck, TargetFPS); 
+		 UnitTests.CheckFrameRate(System.currentTimeMillis(),FrameCheck, TargetFPS);
+		 
+		 if (gameOver) {
+			startGame = false;
+			buttonMessage = "Restart";
+//			 frame = new JFrame("Game");   // Change to the name of your game 
+			 gameworld = new Model(resWidth, resHeight);
+			 canvas = new  Viewer(gameworld);
+//			 Controller.reset();
+//			gameworld = new Model(resWidth, resHeight);
+//			canvas = new Viewer(gameworld); 
+			hello = new MainWindow();
+			gameOver = false;
+		 }
 			  
 		}
 		
 		
 	} 
 	//Basic Model-View-Controller pattern 
-	private static void gameloop() { 
+	private static boolean gameloop() { 
 		// GAMELOOP  
 		
 		// controller input  will happen on its own thread 
 		// So no need to call it explicitly 
 		
 		// model update   
-		gameworld.gamelogic();
+		boolean gameOver = gameworld.gamelogic();
 		// view update 
 		
-		  canvas.updateview(); 
+		canvas.updateview(); 
 		
 		// Both these calls could be setup as  a thread but we want to simplify the game logic for you.  
 		//score update  
 		 frame.setTitle("Score =  "+ gameworld.getScore()); 
+		 
+		 return gameOver;
 		
 		 
 	}
