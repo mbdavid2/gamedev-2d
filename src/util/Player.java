@@ -37,6 +37,19 @@ public class Player extends GameObject {
 	public int getLastMovingDirection() {
 		return lastMovingDirection;
 	}
+	
+	public void doorLogic(GameLevel gameLevel) {
+		// Going up
+		if(Controller.getInstance().isKeyWPressed())
+		{	
+			GameObject door = gameLevel.getDoor();
+			float doorLeft = door.getCentre().getX() - door.getWidth()/2;
+			float doorRight = door.getCentre().getX() + door.getWidth()/2;
+			if (getCentre().getX() > doorLeft && getCentre().getX() < doorRight) {
+				gameLevel.moveNextScreen();
+			}
+		}
+	}
     
 	public void portalLogic(GameLevel gameLevel) {
 		// Going up
@@ -62,9 +75,7 @@ public class Player extends GameObject {
 				gameLevel.switchFloor();
 				this.getCentre().ApplyVector(new Vector3f(0, switchMovement, 0));
 			}
-		}
-		
-		
+		}		
 		
 		// Going down
 		if(Controller.getInstance().isKeySPressed())
@@ -139,6 +150,7 @@ public class Player extends GameObject {
 		}
 		
 		portalLogic(gameLevel);
+		doorLogic(gameLevel);
 		
 	}
 }

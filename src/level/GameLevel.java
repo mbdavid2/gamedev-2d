@@ -37,6 +37,11 @@ public class GameLevel {
 		return currentScreen.getSpikes();
 	}
 	
+	public void moveNextScreen() {
+		currentScreenIndex++;
+		updateCurrentScreen();
+	}
+	
 	private void updateCurrentScreen() {
 		currentScreen = screens.get(currentScreenIndex);
 	}
@@ -65,5 +70,9 @@ public class GameLevel {
 	// Switch the state, return true means the player is on upper, false on lower
 	public boolean switchFloor() {
 		return currentScreen.switchFloor();		
+	}
+	
+	public GameObject getDoor() {
+		return currentScreen.getDoor();
 	}
 }

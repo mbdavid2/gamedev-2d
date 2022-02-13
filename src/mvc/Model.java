@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import level.GameLevel;
+import level.LevelCreator;
 import level.LevelScreen;
 import level.Portal;
 import util.GameObject;
@@ -41,7 +42,7 @@ public class Model {
 	 
 	 private CopyOnWriteArrayList<GameObject> EnemiesList  = new CopyOnWriteArrayList<GameObject>();
 	 private CopyOnWriteArrayList<GameObject> BulletList  = new CopyOnWriteArrayList<GameObject>();
-	 private int Score=0; 
+	 private int Score = 0; 
 	 private final float floorLevel = 400;
 	 
 	private Integer resWidth;
@@ -55,7 +56,7 @@ public class Model {
 		createLevel();
 		
 		//Player 
-		player = new Player("res/characters_flip.png", 90, 90, new Point3f(this.resWidth/2, this.resHeight/2, 0), false);
+		player = new Player("res/characters_flip.png", 90, 90, new Point3f(this.resWidth/4, this.resHeight/2, 0), false);
 		
 		Controller.getInstance().reset();
 		
@@ -71,23 +72,9 @@ public class Model {
 	}
 	
 	private void createLevel() {
-		ArrayList<LevelScreen> levelScreens = new ArrayList<LevelScreen>();
-		ArrayList<Portal> portals1 = new ArrayList<Portal>();
-		ArrayList<GameObject> objects = new ArrayList<GameObject>();
+		LevelCreator levelCreator = new LevelCreator(resWidth, resHeight);
 		
-		GameObject lowerFloor = new GameObject("res/level/floorLower.png", 1280, resHeight/8, new Point3f(resWidth/2, resHeight, 0));
-		GameObject upperFloor= new GameObject("res/level/floorUpper.png", 1280, resHeight/8, new Point3f(resWidth/2, resHeight/2, 0));
-		GameObject spikes = new GameObject("res/fire.png", 20, 20, new Point3f(0, floorLevel, 0));
-		portals1.add(new Portal(resWidth*4/8, resWidth*5/8));
-		portals1.add(new Portal(resWidth*1/8, resWidth*3/8));
-		
-		GameObject crate = new GameObject("res/crate.png", 50, 50, new Point3f(resWidth*2/8, resHeight/2 - 110, 0), true);
-		objects.add(crate);
-		
-		LevelScreen levelScreen1 = new LevelScreen(lowerFloor, upperFloor, spikes, portals1, objects);
-		levelScreens.add(levelScreen1);
-		
-		gameLevel = new GameLevel(levelScreens);
+		gameLevel = levelCreator.createLevel1();
 	}
 	
 	public Integer getResWidth() {

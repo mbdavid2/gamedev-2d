@@ -103,28 +103,13 @@ public class Viewer extends JPanel {
 		//Draw background 
 		drawBackground(g);
 		
-		//Draw player
-		drawPlayer(x, y, width, height, texture, g);
-		
 		// Draw level
 		drawLevel(g);
 		drawPortals(g);
-		
 		drawSpikes(g);
-		  
-		//Draw Bullets 
-		// change back 
-		gameworld.getBullets().forEach((temp) -> 
-		{ 
-			drawBullet((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(), (int) temp.getHeight(), temp.getTexture(),g);	 
-		}); 
 		
-		//Draw Enemies   
-		gameworld.getEnemies().forEach((temp) -> 
-		{
-			drawEnemies((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(), (int) temp.getHeight(), temp.getTexture(),g);	 
-		 
-	    }); 
+		//Draw player
+		drawPlayer(x, y, width, height, texture, g);
 	}
 	
 	private void drawEnemies(int x, int y, int width, int height, String texture, Graphics g) {
@@ -212,24 +197,12 @@ public class Viewer extends JPanel {
 	}
 	
 	private void drawLevel(Graphics g) {
-		GameLevel level = gameworld.getLevel();	
+		GameLevel level = gameworld.getLevel();
 		
 		try {
-			Integer height = getResHeight();
-			Integer width = getResWidth();
-			
-			// Lower level
-			File TextureToLoad = new File(level.getLowerFloor().getTexture());
-			Image myImageLower = ImageIO.read(TextureToLoad);
-			g.drawImage(myImageLower, 0, height*7/8, width, height, 0, 0, 312, 20, null);
-//			g.drawImage(myImageLower, getResWidth()/4, getResHeight()*5/6, getResWidth()*2/4, getResHeight(), 110, 0, 159, 15, null);
-//			g.drawImage(myImageLower, getResWidth()*2/3, getResHeight()*5/6, getResWidth(), getResHeight(), 110, 0, 159, 15, null);
-			
-			// Upper level
-			TextureToLoad = new File(level.getUpperFloor().getTexture());
-			myImageLower = ImageIO.read(TextureToLoad);
-			g.drawImage(myImageLower, 0, height*3/8, width, height/2, 0, 0, 312, 20, null);
-
+			File TextureToLoad;
+			Image myImageLower;
+			// Print the objects (crates, keys...)
 			for (GameObject obj : level.getObjects()) {
 				TextureToLoad = new File(obj.getTexture());
 				myImageLower = ImageIO.read(TextureToLoad);
@@ -237,7 +210,30 @@ public class Viewer extends JPanel {
 				int y = (int) obj.getCentre().getY();
 				g.drawImage(myImageLower, x, y, x + obj.getWidth(), y + obj.getHeight(), 0, 0, 10, 10, null);
 			}
- 			
+			
+			// Print the door
+			GameObject door = level.getDoor();
+			TextureToLoad = new File(door.getTexture());
+			myImageLower = ImageIO.read(TextureToLoad);
+			int x = (int) door.getCentre().getX();
+			int y = (int) door.getCentre().getY();
+			g.drawImage(myImageLower, x, y, x + door.getWidth(), y + door.getHeight(), 0, 0, 57, 77, null);
+			
+			Integer height = getResHeight();
+			Integer width = getResWidth();
+			
+			// Lower level
+			TextureToLoad = new File(level.getLowerFloor().getTexture());
+			myImageLower = ImageIO.read(TextureToLoad);
+			g.drawImage(myImageLower, 0, height*7/8, width, height, 0, 0, 312, 20, null);
+//			g.drawImage(myImageLower, getResWidth()/4, getResHeight()*5/6, getResWidth()*2/4, getResHeight(), 110, 0, 159, 15, null);
+//			g.drawImage(myImageLower, getResWidth()*2/3, getResHeight()*5/6, getResWidth(), getResHeight(), 110, 0, 159, 15, null);
+			
+			// Upper level
+			TextureToLoad = new File(level.getUpperFloor().getTexture());
+			myImageLower = ImageIO.read(TextureToLoad);
+			g.drawImage(myImageLower, 0, height*3/8, width, height/2, 0, 0, 312, 20, null);			
+
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

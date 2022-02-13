@@ -13,14 +13,21 @@ public class LevelScreen {
 	// private ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 	private ArrayList<Portal> portals = new ArrayList<Portal>();
 	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
+	private GameObject door;
 	
 	public LevelScreen(GameObject lowerFloor, GameObject upperFloor, GameObject spikes, 
-					   ArrayList<Portal> portals, ArrayList<GameObject> objects) {
+					   ArrayList<Portal> portals, ArrayList<GameObject> objects,
+					   GameObject door) {
 		this.lowerFloor = lowerFloor;
 		this.upperFloor = upperFloor;
 		this.spikes = spikes;
 		this.portals = portals;
 		this.objects = objects;
+		this.door = door;
+	}
+	
+	public GameObject getDoor() {
+		return door;
 	}
 	
 	public ArrayList<Portal> getPortals() {
