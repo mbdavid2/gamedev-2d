@@ -75,7 +75,7 @@ public class Player extends GameObject {
 		if(Controller.getInstance().isKeyWPressed())
 		{	
 			jumpingIterations = 0; // Cancel the jump
-			Integer portalIndex = gameLevel.playerCanSwitch(this.getCentre().getX());
+			Integer portalIndex = gameLevel.playerCanSwitch(this.getCentre().getX() + this.getWidth()*2/3);
 			
 			if (portalIndex != -1 && !gameLevel.getPlayerOnUpper()) {
 				float switchMovement = gameLevel.getUpperFloor().getCentre().getY();
@@ -101,7 +101,7 @@ public class Player extends GameObject {
 		{
 			jumpingIterations = 0; // Cancel the jump
 			
-			Integer portalIndex = gameLevel.playerCanSwitch(this.getCentre().getX());
+			Integer portalIndex = gameLevel.playerCanSwitch(this.getCentre().getX() + this.getWidth()*2/3);
 			if (portalIndex != -1 && gameLevel.getPlayerOnUpper()) {	
 				float switchMovement = gameLevel.getUpperFloor().getCentre().getY();
 				

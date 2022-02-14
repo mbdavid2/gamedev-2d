@@ -164,10 +164,15 @@ public class Viewer extends JPanel {
 			
 			// Print button prompt if first level
 			if (level.getCurrentIndex() == 0) {
-				Integer portalIndex = level.playerCanSwitch(gameworld.getPlayer().getCentre().getX());
+				Integer portalIndex = level.playerCanSwitch(gameworld.getPlayer().getCentre().getX() + gameworld.getPlayer().getWidth()*2/3);
 				if (portalIndex != -1) {
 					Portal p = level.getPortal(portalIndex);
-					TextureToLoad = new File("res/w_key_bg.png");
+					if (level.getPlayerOnUpper()) {
+						TextureToLoad = new File("res/s_key_bg.png");
+					}
+					else {
+						TextureToLoad = new File("res/w_key_bg.png");
+					}
 					portalImage = ImageIO.read(TextureToLoad);
 					Integer portalCenter = (int) (p.getStart() + (p.getEnd() - p.getStart())/2);
 					float height = (getResHeight()/2 - getResHeight()*3/8);
