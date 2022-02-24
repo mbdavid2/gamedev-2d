@@ -49,27 +49,31 @@ public class Player extends GameObject {
 		GameObject door = gamelevel.getDoor();
 		float doorLeft = door.getCentre().getX() - door.getWidth()/2;
 		float doorRight = door.getCentre().getX() + door.getWidth()/2;
-		return (getCentre().getX() > doorLeft && getCentre().getX() < doorRight);
+		boolean sameLevel = gamelevel.getPlayerOnUpper() == door.getObjectOnUpper();
+		return sameLevel && (getCentre().getX() > doorLeft && getCentre().getX() < doorRight);
 	}
 	
 	public void resetPlayer() {
 		System.out.println("hola " + this.originalCenter);
+		Point3f temp = this.originalCenter.copy();
 		this.setCentre(this.originalCenter);
 	}
 	
 	public void doorLogic(GameLevel gameLevel) {
 		// Check that there is no portal collision
 		Integer portalIndex = gameLevel.playerCanSwitch(this.getCentre().getX() + this.getWidth()*2/3);
-		if(Controller.getInstance().isKeyWPressed() && gameLevel.isDoorEnabled() && portalIndex == -1)
+		if(Controller.getInstance().isKeyWPressed() && gameLevel.isDoorEnabled() && portalIndex == -1 && !movedNextLevel)
 		{	
-			GameObject door = gameLevel.getDoor();
-			float doorLeft = door.getCentre().getX() - door.getWidth()/2;
-			float doorRight = door.getCentre().getX() + door.getWidth()/2;
-			if (getCentre().getX() > doorLeft && getCentre().getX() < doorRight) {
+			if (isWithinDoor(gameLevel)) {
 				gameLevel.moveNextScreen();
 				resetPlayer();
 				movedNextLevel = true;
 			}
+		}
+		else if (!Controller.getInstance().isKeyWPressed()) {
+			// Doing this to prevent portal movement if after opening the
+			// door and moving to the next level we end up under a portal/door
+			movedNextLevel = false;
 		}
 	}
     
@@ -100,7 +104,7 @@ public class Player extends GameObject {
 		}
 		else if (!Controller.getInstance().isKeyWPressed()) {
 			// Doing this to prevent portal movement if after opening the
-			// door and moving to the next level we end up under a portal 
+			// door and moving to the next level we end up under a portal/door
 			movedNextLevel = false;
 		}
 		

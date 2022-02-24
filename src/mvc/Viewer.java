@@ -91,7 +91,7 @@ public class Viewer extends JPanel {
 		
 	}
 	
-	public void printText(String textToPrint, int x, int y, Graphics g, int thickness) {
+	public static void printText(String textToPrint, int x, int y, Graphics g, int thickness) {
 		g.setFont(new Font("UPHEAVAL TT -BRK-", Font.BOLD, 70)); 
 		g.setColor(Color.BLACK);
 		g.drawString(textToPrint, x+thickness, y-thickness);

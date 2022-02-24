@@ -67,7 +67,6 @@ public class MainWindow {
 			   canvas.setBackground(new Color(255,255,255)); //white background  replaced by Space background but if you remove the background method this will draw a white screen 
 		      canvas.setVisible(false);   // this will become visible after you press the key. 
 		          
-		       
 	        JButton startMenuButton = new JButton(buttonMessage);  // start button 
 	        startMenuButton.addActionListener(new ActionListener()
 	           { 
@@ -75,12 +74,13 @@ public class MainWindow {
 				public void actionPerformed(ActionEvent e) { 
 					startMenuButton.setVisible(false);
 					BackgroundImageForStartMenu.setVisible(false); 
-					canvas.setVisible(true); 
+					canvas.setVisible(true);
 					canvas.addKeyListener(Controller);    //adding the controller to the Canvas  
 	            canvas.requestFocusInWindow();   // making sure that the Canvas is in focus so keyboard input will be taking in .
 					startGame=true;
 				}});  
 	        startMenuButton.setBounds(540, 500, 200, 40); 
+	        
 //	        startMenuButton.setBackground(Color.BLUE);
 	        
 	        //loading background image 
@@ -96,7 +96,13 @@ public class MainWindow {
 			}   
 			 
 	       frame.add(startMenuButton);  
-	       frame.setVisible(true);   
+	       frame.setVisible(true);  
+	       
+	       JPanel panel = new JPanel();
+	       JLabel label = new JLabel("Your text here");
+	       panel.add(label);
+	       frame.add(panel);
+//	       Viewer.printText("Working Title", resWidth/2, resHeight/2, frame.getGraphics(), 4);
 	}
 
 	public static void main(String[] args) {

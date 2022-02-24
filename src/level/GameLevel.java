@@ -50,7 +50,7 @@ public class GameLevel {
 	public void moveNextScreen() {
 		portalsEnabled = false;
 		currentScreenIndex++;
-		doorEnabled = false;
+//		doorEnabled = true;
 		updateCurrentScreen();
 		currentScreen.setPlayerOnUpper(false);
 		portalsEnabled = true;

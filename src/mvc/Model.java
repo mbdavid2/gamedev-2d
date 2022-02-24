@@ -65,8 +65,8 @@ public class Model {
 	public void reset() {
 		createLevel();
 		
-		//Playe
-		player = new Player("res/characters_flip.png", 90, 90, new Point3f(this.resWidth/4, this.resHeight/2, 0), false);
+		//Player
+		player = new Player("res/characters_flip.png", 90, 90, new Point3f(this.resWidth/4, this.resHeight*2/3, 0), false);
 		
 		Controller.getInstance().reset();
 	}

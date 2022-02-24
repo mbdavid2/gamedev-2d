@@ -132,6 +132,10 @@ public class Point3f {
 		}
 		return f;
 	}
+	
+	public Point3f copy() {
+		return new Point3f(x, y, z);
+	}
 
 	public float getX() {
 		return x;
