@@ -9,6 +9,7 @@ public class GameLevel {
 	private final Integer resHeight = 720;
 	private Integer currentScreenIndex = 0;
 	private boolean doorEnabled = true;
+	private boolean portalsEnabled = true;
 	
 	private ArrayList<LevelScreen> screens = new ArrayList<LevelScreen>();
 	private LevelScreen currentScreen;
@@ -47,9 +48,12 @@ public class GameLevel {
 	}
 	
 	public void moveNextScreen() {
+		portalsEnabled = false;
 		currentScreenIndex++;
 		doorEnabled = false;
 		updateCurrentScreen();
+		currentScreen.setPlayerOnUpper(false);
+		portalsEnabled = true;
 	}
 	
 	public Portal getPortal(Integer portalIndex) {
@@ -79,7 +83,8 @@ public class GameLevel {
 	
 	public Integer playerCanSwitch(float playerPosition) {
 		// Check whether the player can switch between upper and lower
-		return currentScreen.playerCanSwitch(playerPosition);
+		if (!portalsEnabled) return -1;
+		else return currentScreen.playerCanSwitch(playerPosition);
 	}
 	
 	public boolean getPlayerOnUpper() {

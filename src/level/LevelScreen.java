@@ -82,4 +82,8 @@ public class LevelScreen {
 		return playerOnUpper;
 	}
 	
+	public void setPlayerOnUpper(boolean playerOnUpper) {
+		this.playerOnUpper = playerOnUpper;
+	}
+	
 }

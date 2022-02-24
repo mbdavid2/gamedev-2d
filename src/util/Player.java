@@ -7,6 +7,7 @@ public class Player extends GameObject {
 	private int movingDirection = 0; // -1 left, 0 still, 1 right
 	private int lastMovingDirection = 1;
 	private int jumpingIterations = 0;
+	private boolean movedNextLevel = false; 
 	 
 	private Point3f originalCenter;
 	
@@ -57,8 +58,9 @@ public class Player extends GameObject {
 	}
 	
 	public void doorLogic(GameLevel gameLevel) {
-		// Going up
-		if(Controller.getInstance().isKeyWPressed() && gameLevel.isDoorEnabled())
+		// Check that there is no portal collision
+		Integer portalIndex = gameLevel.playerCanSwitch(this.getCentre().getX() + this.getWidth()*2/3);
+		if(Controller.getInstance().isKeyWPressed() && gameLevel.isDoorEnabled() && portalIndex == -1)
 		{	
 			GameObject door = gameLevel.getDoor();
 			float doorLeft = door.getCentre().getX() - door.getWidth()/2;
@@ -66,13 +68,14 @@ public class Player extends GameObject {
 			if (getCentre().getX() > doorLeft && getCentre().getX() < doorRight) {
 				gameLevel.moveNextScreen();
 				resetPlayer();
+				movedNextLevel = true;
 			}
 		}
 	}
     
 	public void portalLogic(GameLevel gameLevel) {
 		// Going up
-		if(Controller.getInstance().isKeyWPressed())
+		if(Controller.getInstance().isKeyWPressed() && !movedNextLevel)
 		{	
 			jumpingIterations = 0; // Cancel the jump
 			Integer portalIndex = gameLevel.playerCanSwitch(this.getCentre().getX() + this.getWidth()*2/3);
@@ -94,7 +97,12 @@ public class Player extends GameObject {
 				gameLevel.switchFloor();
 				this.getCentre().ApplyVector(new Vector3f(0, switchMovement, 0));
 			}
-		}		
+		}
+		else if (!Controller.getInstance().isKeyWPressed()) {
+			// Doing this to prevent portal movement if after opening the
+			// door and moving to the next level we end up under a portal 
+			movedNextLevel = false;
+		}
 		
 		// Going down
 		if(Controller.getInstance().isKeySPressed())
@@ -132,14 +140,14 @@ public class Player extends GameObject {
 		movingDirection = 0;
 		if(Controller.getInstance().isKeyAPressed()){
 			movingDirection = -1;
-			this.getCentre().ApplyVector( new Vector3f(-3,0,0), gameLevel.getObstacles(), gameLevel.getPlayerOnUpper(), lastMovingDirection); 
+			this.getCentre().ApplyVector( new Vector3f(-4,0,0), gameLevel.getObstacles(), gameLevel.getPlayerOnUpper(), lastMovingDirection); 
 			lastMovingDirection = -1;
 		}
 		
 		if(Controller.getInstance().isKeyDPressed())
 		{
 			movingDirection = 1;
-			this.getCentre().ApplyVector( new Vector3f(3,0,0), gameLevel.getObstacles(), gameLevel.getPlayerOnUpper(), lastMovingDirection);
+			this.getCentre().ApplyVector( new Vector3f(4,0,0), gameLevel.getObstacles(), gameLevel.getPlayerOnUpper(), lastMovingDirection);
 			lastMovingDirection = 1;
 		}
 
@@ -168,8 +176,7 @@ public class Player extends GameObject {
 			canJumpAgain = true;
 		}
 		
-		portalLogic(gameLevel);
 		doorLogic(gameLevel);
-		
+		portalLogic(gameLevel);		
 	}
 }

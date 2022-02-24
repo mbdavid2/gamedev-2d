@@ -1,5 +1,6 @@
 package mvc;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -49,6 +51,8 @@ SOFTWARE.
 public class Viewer extends JPanel {
 	private long CurrentAnimationTime= 0; 
 	private final String portalTexture = "res/level/floorLower.png";
+	private Integer lvNameFrame = 0;
+	private Integer currentScreenIndex = 0;
 	
 	Model gameworld = new Model(1280, 720); 
 	 
@@ -87,6 +91,17 @@ public class Viewer extends JPanel {
 		
 	}
 	
+	public void printText(String textToPrint, int x, int y, Graphics g, int thickness) {
+		g.setFont(new Font("UPHEAVAL TT -BRK-", Font.BOLD, 70)); 
+		g.setColor(Color.BLACK);
+		g.drawString(textToPrint, x+thickness, y-thickness);
+		g.drawString(textToPrint, x+thickness, y+thickness);
+		g.drawString(textToPrint, x-thickness, y-thickness);
+		g.drawString(textToPrint, x-thickness, y+thickness);
+		g.setColor(Color.WHITE);		
+		g.drawString(textToPrint, x, y);
+	}
+	
 	public void paintComponent(Graphics g) {
 		
 		super.paintComponent(g);
@@ -108,11 +123,43 @@ public class Viewer extends JPanel {
 		drawLevel(g);
 		drawPortals(g);
 		drawSpikes(g);
+		drawLevelName(g);
 		
 		//Draw player
-		drawPlayer(x, y, width, height, texture, g);
+		drawPlayer(x, y, width, height, texture, g);		
 	}
 
+	private void drawLevelName(Graphics g) {
+		GameLevel level = gameworld.getLevel();
+		if (level.getCurrentIndex() != currentScreenIndex) {
+			currentScreenIndex = level.getCurrentIndex();
+			lvNameFrame = 0;
+		}
+
+		Integer limit = (int)(getResWidth()*3/5);
+		Integer currentPosition = (int)(getResWidth()/6 + lvNameFrame);
+		double speed;
+		if (currentPosition < limit) {
+			speed = Math.log(limit - currentPosition)*6;
+		}
+		else {
+			speed = 1;
+		}
+//		if (currentPosition < limit) {
+			// Create the name string
+			Integer currentIndex = level.getCurrentIndex() + 1;
+			StringBuilder title = new StringBuilder();
+			title.append("LEVEL ");
+			title.append("1");
+			title.append(" - ");
+			title.append(currentIndex);
+			
+			// Animation logic
+			printText(title.toString(), getResWidth()/6 + (int)(lvNameFrame), getResHeight()/4, g, 4);
+			lvNameFrame = (int) (lvNameFrame + speed);
+//		}
+	}
+	
 	private void drawBackground(Graphics g)
 	{
 		File TextureToLoad = new File("res/exterior-parallaxBG1.png");  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 

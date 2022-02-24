@@ -66,7 +66,7 @@ public class Model {
 		createLevel();
 		
 		//Playe
-		player = new Player("res/characters_flip.png", 90, 90, new Point3f(this.resWidth/2, this.resHeight/2, 0), false);
+		player = new Player("res/characters_flip.png", 90, 90, new Point3f(this.resWidth/4, this.resHeight/2, 0), false);
 		
 		Controller.getInstance().reset();
 	}
@@ -92,12 +92,12 @@ public class Model {
 //		System.out.println("Player now: " + player.getCentre());
 		playerLogic(); 
 			
-		spikesLogic();
+		fireLogic();
 		return Controller.getInstance().getGameOver();
 	}
 
 
-	private void spikesLogic() {
+	private void fireLogic() {
 		gameLevel.getSpikes().getCentre().ApplyVector(new Vector3f(0.5f, 0, 0));
 		if (gameLevel.getSpikes().getCentre().getX() > player.getCentre().getX() - player.getWidth()/2) {
 			Controller.getInstance().setGameOver();
