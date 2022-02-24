@@ -29,7 +29,9 @@ public class LevelCreator
 		ArrayList<LevelScreen> levelScreens = new ArrayList<LevelScreen>();
 		levelScreens.add(createLevel1Screen1());
 		levelScreens.add(createLevel1Screen2());
-		levelScreens.add(createLevel1Screen3());
+		levelScreens.add(createLevel1Screen2());
+		levelScreens.add(createLevel1Screen2());
+		levelScreens.add(createLevel1Screen2());
 		
 		return new GameLevel(levelScreens);
 	}

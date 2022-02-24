@@ -15,10 +15,10 @@ public class Player extends GameObject {
 
 	}
 	
-    public Player(String textureLocation,int width,int height,Point3f centre, boolean isObjectOnUpper) { 
+    public Player(String textureLocation,int width,int height,  Point3f centre, boolean isObjectOnUpper) { 
     	super(textureLocation, width, height, centre, isObjectOnUpper);
     	
-    	this.originalCenter = new Point3f(centre.getX(), centre.getY(), centre.getZ());
+    	this.originalCenter = new Point3f(centre.getX(), centre.getY(), centre.getZ()).copy();
     	System.out.println(centre);
     	System.out.println(this.originalCenter);
 	}
@@ -53,10 +53,10 @@ public class Player extends GameObject {
 		return sameLevel && (getCentre().getX() > doorLeft && getCentre().getX() < doorRight);
 	}
 	
-	public void resetPlayer() {
+	public void resetPlayer(GameLevel gameLevel) {
 		System.out.println("hola " + this.originalCenter);
-		Point3f temp = this.originalCenter.copy();
-		this.setCentre(this.originalCenter);
+		this.setCentre(this.originalCenter.copy());
+		gameLevel.setPlayerOnUpper(false);
 	}
 	
 	public void doorLogic(GameLevel gameLevel) {
@@ -65,9 +65,13 @@ public class Player extends GameObject {
 		if(Controller.getInstance().isKeyWPressed() && gameLevel.isDoorEnabled() && portalIndex == -1 && !movedNextLevel)
 		{	
 			if (isWithinDoor(gameLevel)) {
+//		    	System.out.println("Before:" + this.getCentre());
+		    	System.out.println("Before:" + this.originalCenter);
 				gameLevel.moveNextScreen();
-				resetPlayer();
+				resetPlayer(gameLevel);
 				movedNextLevel = true;
+//				System.out.println("After:" + this.getCentre());
+		    	System.out.println("After:" + this.originalCenter);
 			}
 		}
 		else if (!Controller.getInstance().isKeyWPressed()) {

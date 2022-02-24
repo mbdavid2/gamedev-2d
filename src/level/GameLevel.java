@@ -47,12 +47,15 @@ public class GameLevel {
 		return doorEnabled;
 	}
 	
+	public void setPlayerOnUpper(boolean playerOnUpper) {
+		currentScreen.setPlayerOnUpper(playerOnUpper);
+	}
+	
 	public void moveNextScreen() {
 		portalsEnabled = false;
 		currentScreenIndex++;
 //		doorEnabled = true;
 		updateCurrentScreen();
-		currentScreen.setPlayerOnUpper(false);
 		portalsEnabled = true;
 	}
 	

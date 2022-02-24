@@ -98,7 +98,7 @@ public class Model {
 
 
 	private void fireLogic() {
-		gameLevel.getSpikes().getCentre().ApplyVector(new Vector3f(0.5f, 0, 0));
+		gameLevel.getSpikes().getCentre().ApplyVector(new Vector3f(1f, 0, 0));
 		if (gameLevel.getSpikes().getCentre().getX() > player.getCentre().getX() - player.getWidth()/2) {
 			Controller.getInstance().setGameOver();
 		}
