@@ -1,4 +1,6 @@
 package util;
+import javax.imageio.ImageIO;
+
 import level.GameLevel;
 import mvc.Controller;
 
@@ -50,7 +52,16 @@ public class Player extends GameObject {
 		float doorLeft = door.getCentre().getX() - door.getWidth()/2;
 		float doorRight = door.getCentre().getX() + door.getWidth()/2;
 		boolean sameLevel = gamelevel.getPlayerOnUpper() == door.getObjectOnUpper();
-		return sameLevel && (getCentre().getX() > doorLeft && getCentre().getX() < doorRight);
+		boolean doorOpen = true;
+		
+		for (GameObject obj : gamelevel.getButtons()) {
+			doorOpen = false;
+			if (obj.getIsPressed()) {
+				doorOpen = true;
+			}
+		}
+		
+		return doorOpen && sameLevel && (getCentre().getX() > doorLeft && getCentre().getX() < doorRight);
 	}
 	
 	public void resetPlayer(GameLevel gameLevel) {
@@ -66,12 +77,10 @@ public class Player extends GameObject {
 		{	
 			if (isWithinDoor(gameLevel)) {
 //		    	System.out.println("Before:" + this.getCentre());
-		    	System.out.println("Before:" + this.originalCenter);
 				gameLevel.moveNextScreen();
 				resetPlayer(gameLevel);
 				movedNextLevel = true;
 //				System.out.println("After:" + this.getCentre());
-		    	System.out.println("After:" + this.originalCenter);
 			}
 		}
 		else if (!Controller.getInstance().isKeyWPressed()) {
@@ -177,7 +186,7 @@ public class Player extends GameObject {
 		
 		// Gravity
 		if (isOnAir(gameLevel)) {
-			this.getCentre().ApplyVector(new Vector3f(0,-5,0));
+			this.getCentre().ApplyVector(new Vector3f(0,-6,0));
 		}
 		else {
 			canJumpAgain = true;

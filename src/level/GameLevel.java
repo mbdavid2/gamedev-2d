@@ -27,6 +27,10 @@ public class GameLevel {
 		return currentScreen.getDeathObjs();
 	}
 	
+	public ArrayList<GameObject> getButtons() {
+		return currentScreen.getButtons();
+	}
+	
 	public Integer getResWidth() {
 		return resWidth;
 	}
@@ -65,6 +69,14 @@ public class GameLevel {
 	
 	public Portal getPortal(Integer portalIndex) {
 		return currentScreen.getPortal(portalIndex);
+	}
+	
+	public boolean hasName() {
+		return currentScreen.hasName();
+	}
+	
+	public String getName() {
+		return currentScreen.getName();
 	}
 	
 	private void updateCurrentScreen() {

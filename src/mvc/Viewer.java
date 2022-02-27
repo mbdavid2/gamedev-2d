@@ -127,6 +127,7 @@ public class Viewer extends JPanel {
 		// Draw level
 		drawDoor(g);
 		drawLevel(g);
+		drawObjects(g);
 		drawPortals(g);
 		drawSpikes(g);
 		drawDeathObj(g);
@@ -135,20 +136,23 @@ public class Viewer extends JPanel {
 		drawPlayer(x, y, width, height, texture, g);	
 		
 		if (Controller.getInstance().getGameOver()) {
-			if (resetGameOver) {
-				lvNameFrame = 0;
-				resetGameOver = false;
-			}
-			boolean finished = drawLevelName(g, true);
-			if (finished) {
-				Controller.getInstance().setGameOverPrinted(true);
-				resetGameOver = true;
-			}
-//			printText("GAME OVER", getResWidth()/2, getResHeight()/4, g, 4);
+			lvNameFrame = 0;
+			Controller.getInstance().reset();
 		}
-		else {
+//			if (resetGameOver) {
+//				lvNameFrame = 0;
+//				resetGameOver = false;
+//			}
+//			boolean finished = drawLevelName(g, true);
+//			if (finished) {
+//				Controller.getInstance().setGameOverPrinted(true);
+//				resetGameOver = true;
+//			}
+////			printText("GAME OVER", getResWidth()/2, getResHeight()/4, g, 4);
+//		}
+//		else {
 			drawLevelName(g, false);
-		}
+//		}
 	}
 
 	private boolean drawLevelName(Graphics g, boolean gameOver) {
@@ -164,13 +168,13 @@ public class Viewer extends JPanel {
 		
 		double speed;
 		if (currentPosition < limit) {
-			speed = Math.log(limit - currentPosition)*6;
+			speed = Math.log(limit - currentPosition)*5;
 		}
 		else {
 			speed = 1;
 			finished = true;
 		}
-			// Create the name string
+		// Create the name string
 		
 		String msgText = "Game Over";
 		if (!gameOver) {
@@ -188,6 +192,10 @@ public class Viewer extends JPanel {
 		}
 		else {
 			printText(msgText, getResWidth()/6 + (int)(lvNameFrame), getResHeight()/4, g, 4, 70);
+			if (level.hasName()) {
+				printText(level.getName(), getResWidth()/7 + (int)(lvNameFrame), getResHeight()/3, g, 4, 40);
+			}
+			
 		}
 		lvNameFrame = (int) (lvNameFrame + speed);
 			
@@ -298,18 +306,27 @@ public class Viewer extends JPanel {
 		try {
 			// Print the door
 			GameObject door = level.getDoor();
-			File TextureToLoad = new File(door.getTexture());
-			Image myImageLower = ImageIO.read(TextureToLoad);
+			File openDoor = new File(door.getTexture());
+			File closedDoor = new File("res/level/doorWithBars.png");
+			Image doorImage = ImageIO.read(openDoor);
+			
+			for (GameObject obj : level.getButtons()) {
+				doorImage = ImageIO.read(closedDoor);
+				if (obj.getIsPressed()) {
+					doorImage = ImageIO.read(openDoor);
+				}
+			}
+			
 			int x = (int) door.getCentre().getX();
 			int y = (int) door.getCentre().getY();
-			g.drawImage(myImageLower, x, y, x + door.getWidth(), y + door.getHeight(), 0, 0, 57, 77, null);
+			g.drawImage(doorImage, x, y, x + door.getWidth(), y + door.getHeight(), 0, 0, 57, 77, null);
 			
 			// Print button prompt if first level
 			if (level.getCurrentIndex() == 0) {
 				if (gameworld.getPlayer().isWithinDoor(level)) {
-					TextureToLoad = new File("res/level/doorW.png");
-					myImageLower = ImageIO.read(TextureToLoad);
-					g.drawImage(myImageLower, x, y, x + door.getWidth(), y + door.getHeight(), 0, 0, 57, 77, null);
+					openDoor = new File("res/level/doorW.png");
+					doorImage = ImageIO.read(openDoor);
+					g.drawImage(doorImage, x, y, x + door.getWidth(), y + door.getHeight(), 0, 0, 57, 77, null);
 				}
 			}
 		} catch (IOException e) {
@@ -319,7 +336,7 @@ public class Viewer extends JPanel {
 	}
 	
 	
-	private void drawLevel(Graphics g) {
+	private void drawObjects(Graphics g) {
 		GameLevel level = gameworld.getLevel();
 		
 		try {
@@ -343,6 +360,31 @@ public class Viewer extends JPanel {
 				int y = (int) obj.getCentre().getY() - obj.getHeight()/2;
 				g.drawImage(myImageLower, x, y, x + obj.getWidth(), y + obj.getHeight(), 0, 0, 23, 46, null);
 			}
+			
+			// Print the buttons
+			for (GameObject obj : level.getButtons()) {
+				TextureToLoad = new File(obj.getTexture());
+				myImageLower = ImageIO.read(TextureToLoad);
+				int x = (int) obj.getCentre().getX();
+				int y = (int) obj.getCentre().getY();
+				if (obj.getIsPressed()) y = y + obj.getHeight()/2;
+				g.drawImage(myImageLower, x, y, x + obj.getWidth(), y + obj.getHeight(), 0, 0, 10, 10, null);
+			}
+			
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void drawLevel(Graphics g) {
+		GameLevel level = gameworld.getLevel();
+		
+		try {
+			File TextureToLoad;
+			Image myImageLower;
 			
 			Integer height = getResHeight();
 			Integer width = getResWidth();

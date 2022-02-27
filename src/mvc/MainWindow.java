@@ -132,6 +132,7 @@ public class MainWindow {
 			
 			if(startGame && !gameOver) {
 				gameOver = gameloop();
+				gameOver = false;
 			}
 			
 			//UNIT test to see if framerate matches 

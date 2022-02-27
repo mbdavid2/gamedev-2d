@@ -67,6 +67,11 @@ public class Model {
 		
 		//Player
 		player = new Player("res/characters_flip.png", 90, 90, new Point3f(this.resWidth/4, this.resHeight*2/3, 0), false);
+	}
+	
+	public void resetCurrentLevel() {
+//		gameLevel.moveNextScreen();
+		player.resetPlayer(gameLevel);
 		
 		Controller.getInstance().reset();
 	}
@@ -93,12 +98,52 @@ public class Model {
 		playerLogic(); 
 			
 		fireLogic();
+//		objectLogic();
 		deathObjLogic();
-		System.out.println("Printed:" + Controller.getInstance().getGameOverPrinted() + " Over: " + Controller.getInstance().getGameOver());
+		buttonLogic();
+		
+		// Reset the level if gameOver
+		if (Controller.getInstance().getGameOver()) {
+			reset();
+		}
+		
 		if (Controller.getInstance().getGameOverPrinted()) return false;
 		return Controller.getInstance().getGameOver();
 	}
+	
+	private boolean isPlayerOnObject(GameObject obj) {
+		if (obj.getObjectOnUpper() == gameLevel.getPlayerOnUpper() && !player.isOnAir(gameLevel)) {
+			// Check same position
+			
+			if (player.getCentre().getX() + player.getWidth()*1/3 > obj.getCentre().getX() - obj.getWidth()/2 &&
+				player.getCentre().getX() + player.getWidth()*1/3 < obj.getCentre().getX() + obj.getWidth()/2) {
+				return true;
+			}
+		}
+		return false;
+	}
 
+	private void buttonLogic() {
+		for (GameObject button : gameLevel.getButtons()) {
+			boolean isCrateOnButton = false;
+			for (GameObject obj : gameLevel.getObjects()) {
+				if (obj.getObjectOnUpper() == button.getObjectOnUpper()) {
+					isCrateOnButton = true;
+				}
+			}
+			
+			boolean isPressed = isPlayerOnObject(button) || isCrateOnButton;
+			button.setIsPressed(isPressed);
+		}
+	}
+	
+//	private void objectLogic() {
+//		for (GameObject obj : gameLevel.getObjects()) {
+//			if (isPlayerOnObject(obj)) {
+//				obj
+//			}
+//		}
+//	}
 
 	private void fireLogic() {
 		gameLevel.getSpikes().getCentre().ApplyVector(new Vector3f(1f, 0, 0));

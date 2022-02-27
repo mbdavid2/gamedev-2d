@@ -32,6 +32,7 @@ public class GameObject {
 	private String textureLocation; 
 	private String blanktexture="res/blankSprite.png";
 	private boolean isObjectOnUpper = false;
+	private boolean isPressed = false;
 	
 	public GameObject() {  
 		
@@ -72,12 +73,21 @@ public class GameObject {
 		//make sure to put boundaries on the gameObject 
 	 
 	}
+	
+	public boolean getIsPressed() {
+		return isPressed;
+	}
 
+	public void setIsPressed(boolean isPressed) {
+		this.isPressed = isPressed;
+	}
+	
 	public int getWidth() {
 		return width;
 	}
 
 	public int getHeight() {
+		if (isPressed) return height/2;
 		return height;
 	}
 	
@@ -91,9 +101,9 @@ public class GameObject {
 
 	public String getTexture() {
 		if(hasTextured) 
-			{
+		{
 			return textureLocation;
-			}
+		}
 		 
 		return blanktexture; 
 	}

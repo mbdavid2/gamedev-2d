@@ -17,6 +17,8 @@ public class LevelScreen {
 	private ArrayList<GameObject> deathObjs = new ArrayList<GameObject>();
 	private GameObject door;
 	
+	private String name = "no_name";
+	
 	public LevelScreen(GameObject lowerFloor, GameObject upperFloor, GameObject spikes, 
 					   ArrayList<Portal> portals, ArrayList<GameObject> objects,
 					   ArrayList<GameObject> obstacles, ArrayList<GameObject> deathObjs, 
@@ -32,6 +34,18 @@ public class LevelScreen {
 		this.buttons = buttons;
 	}
 	
+	public boolean hasName() {
+		return !name.equals("no_name");
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	public GameObject getDoor() {
 		return door;
 	}
@@ -42,6 +56,10 @@ public class LevelScreen {
 	
 	public ArrayList<GameObject> getObjects() {
 		return objects;
+	}
+	
+	public ArrayList<GameObject> getButtons() {
+		return buttons;
 	}
 	
 	public ArrayList<GameObject> getObstacles() {
