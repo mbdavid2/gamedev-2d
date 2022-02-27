@@ -43,7 +43,8 @@ public class Model {
 	 private CopyOnWriteArrayList<GameObject> EnemiesList  = new CopyOnWriteArrayList<GameObject>();
 	 private CopyOnWriteArrayList<GameObject> BulletList  = new CopyOnWriteArrayList<GameObject>();
 	 private int Score = 0; 
-	 private final float floorLevel = 400;
+	 private Integer currentLevel = 1;
+	 private Integer deaths = 0;
 	 
 	private Integer resWidth;
 	private Integer resHeight;
@@ -53,7 +54,7 @@ public class Model {
 		this.resWidth = resWidth;
 		this.resHeight = resHeight;
 		
-		createLevel(false);
+		createLevel(currentLevel);
 		
 		//Player 
 		player = new Player("res/characters_flip.png", 90, 90, new Point3f(this.resWidth/4, this.resHeight*2/3, 0), false);
@@ -63,7 +64,7 @@ public class Model {
 	}
 	
 	public void reset() {
-		createLevel(true);
+		createLevel(currentLevel);
 		
 		//Player
 		player = new Player("res/characters_flip.png", 90, 90, new Point3f(this.resWidth/4, this.resHeight*2/3, 0), false);
@@ -76,10 +77,15 @@ public class Model {
 		Controller.getInstance().reset();
 	}
 	
-	private void createLevel(boolean names) {
+	private void createLevel(Integer currentLevel) {
 		LevelCreator levelCreator = new LevelCreator(resWidth, resHeight);
+		if (currentLevel == 1) {
+			gameLevel = levelCreator.createLevel1(deaths);
+		}
+		else {
+			gameLevel = levelCreator.createLevel1(deaths);
+		}
 		
-		gameLevel = levelCreator.createLevel1(names);
 	}
 	
 	public Integer getResWidth() {
@@ -104,6 +110,7 @@ public class Model {
 		
 		// Reset the level if gameOver
 		if (Controller.getInstance().getGameOver()) {
+			if (gameLevel.getCurrentIndex() >= 2) deaths++;
 			reset();
 		}
 		
