@@ -163,8 +163,8 @@ public class Viewer extends JPanel {
 			lvNameFrame = 0;
 		}
 
-		Integer limit = (int)(getResWidth()*3/5);
-		Integer currentPosition = (int)(getResWidth()/6 + lvNameFrame);
+		Integer limit = (int)(getResWidth()*2/3);
+		Integer currentPosition = (int)(getResWidth()/3 + lvNameFrame);
 		
 		double speed;
 		if (currentPosition < limit) {
@@ -191,9 +191,9 @@ public class Viewer extends JPanel {
 			printText(msgText, getResWidth()/3, getResHeight()/4, g, 6, 90);
 		}
 		else {
-			printText(msgText, getResWidth()/6 + (int)(lvNameFrame), getResHeight()/4, g, 4, 70);
+			printText(msgText, getResWidth()/6 + (int)(lvNameFrame), getResHeight()/5, g, 4, 70);
 			if (level.hasName()) {
-				printText(level.getName(), getResWidth()/7 + (int)(lvNameFrame), getResHeight()/3, g, 4, 40);
+				printText(level.getName(), getResWidth()/5 + (int)(lvNameFrame), getResHeight()/4, g, 4, 40);
 			}
 			
 		}

@@ -53,7 +53,7 @@ public class Model {
 		this.resWidth = resWidth;
 		this.resHeight = resHeight;
 		
-		createLevel();
+		createLevel(false);
 		
 		//Player 
 		player = new Player("res/characters_flip.png", 90, 90, new Point3f(this.resWidth/4, this.resHeight*2/3, 0), false);
@@ -63,7 +63,7 @@ public class Model {
 	}
 	
 	public void reset() {
-		createLevel();
+		createLevel(true);
 		
 		//Player
 		player = new Player("res/characters_flip.png", 90, 90, new Point3f(this.resWidth/4, this.resHeight*2/3, 0), false);
@@ -76,10 +76,10 @@ public class Model {
 		Controller.getInstance().reset();
 	}
 	
-	private void createLevel() {
+	private void createLevel(boolean names) {
 		LevelCreator levelCreator = new LevelCreator(resWidth, resHeight);
 		
-		gameLevel = levelCreator.createLevel1();
+		gameLevel = levelCreator.createLevel1(names);
 	}
 	
 	public Integer getResWidth() {

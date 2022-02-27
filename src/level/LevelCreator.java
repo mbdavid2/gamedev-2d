@@ -15,6 +15,8 @@ public class LevelCreator
 	private final Integer doorUpper;
 	private final Integer doorLower; 
 	
+	private boolean names = false;
+	
 	public LevelCreator(Integer resWidth, Integer resHeight) {
 		this.resWidth = resWidth;
 		this.resHeight = resHeight;
@@ -24,7 +26,8 @@ public class LevelCreator
 	}
 	
 	
-	public GameLevel createLevel1() {
+	public GameLevel createLevel1(boolean names) {
+		this.names = names;
 		ArrayList<LevelScreen> levelScreens = new ArrayList<LevelScreen>();
 		levelScreens.add(createLevel1Screen1());
 		levelScreens.add(createLevel1Screen2());
@@ -55,6 +58,7 @@ public class LevelCreator
 		obstacles.add(wall);
 		
 		LevelScreen levelScreen = new LevelScreen(lowerFloor, upperFloor, spikes, portals1, objects, obstacles, deathObjs, buttons, door);
+		if (names) levelScreen.setName("Again...");
 		return levelScreen;
 	}
 	
@@ -78,6 +82,7 @@ public class LevelCreator
 		GameObject door = new GameObject("res/level/door.png", (int)(resWidth/11), (int)(resHeight/4.6), new Point3f(resWidth*7/8, doorUpper, 0), true);
 		
 		LevelScreen levelScreen = new LevelScreen(lowerFloor, upperFloor, spikes, portals1, objects, obstacles, deathObjs, buttons, door);
+		if (names) levelScreen.setName("You know the drill");
 		return levelScreen;
 	}
 	
@@ -104,6 +109,7 @@ public class LevelCreator
 		GameObject door = new GameObject("res/level/door.png", (int)(resWidth/11), (int)(resHeight/4.6), new Point3f(resWidth*7/8, doorLower, 0), false);
 		
 		LevelScreen levelScreen = new LevelScreen(lowerFloor, upperFloor, spikes, portals1, objects, obstacles, deathObjs, buttons, door);
+		if (names) levelScreen.setName("Faster this time :)");
 		return levelScreen;
 	}
 	
@@ -118,7 +124,7 @@ public class LevelCreator
 		GameObject lowerFloor = new GameObject("res/level/floorLower.png", 1280, resHeight/8, new Point3f(resWidth/2, resHeight, 0));
 		GameObject upperFloor= new GameObject("res/level/floorUpper.png", 1280, resHeight/8, new Point3f(resWidth/2, resHeight/2, 0));
 		GameObject spikes = new GameObject("res/fire.png", 20, 20, new Point3f(0, resHeight/2, 0));
-		portals1.add(new Portal(resWidth*3/8, resWidth*5/8));
+		portals1.add(new Portal(resWidth*4/8, resWidth*5/8));
 //		portals1.add(new Portal(resWidth*1/8, resWidth*3/8));
 		
 		GameObject door = new GameObject("res/level/door.png", (int)(resWidth/11), (int)(resHeight/4.6), new Point3f(resWidth*7/8, doorUpper, 0), true);
