@@ -10,6 +10,7 @@ import java.awt.TexturePaint;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
@@ -49,9 +50,10 @@ SOFTWARE.
  * Credits: Kelly Charles (2020)
  */ 
 public class Viewer extends JPanel {
-	private long CurrentAnimationTime= 0; 
+	private long currentAnimationTime= 0; 
 	private final String portalTexture = "res/level/floorLower.png";
 	private Integer lvNameFrame = 0;
+	private boolean resetGameOver = true;
 	private Integer currentScreenIndex = 0;
 	
 	Model gameworld = new Model(1280, 720); 
@@ -66,6 +68,10 @@ public class Viewer extends JPanel {
 	
 	public Viewer(Model World) {
 		this.gameworld=World;
+		lvNameFrame = 0;
+		resetGameOver = true;
+		currentScreenIndex = 0;
+		currentAnimationTime = 0;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -91,8 +97,8 @@ public class Viewer extends JPanel {
 		
 	}
 	
-	public static void printText(String textToPrint, int x, int y, Graphics g, int thickness) {
-		g.setFont(new Font("UPHEAVAL TT -BRK-", Font.BOLD, 70)); 
+	public static void printText(String textToPrint, int x, int y, Graphics g, int thickness, int fontSize) {
+		g.setFont(new Font("UPHEAVAL TT -BRK-", Font.BOLD, fontSize)); 
 		g.setColor(Color.BLACK);
 		g.drawString(textToPrint, x+thickness, y-thickness);
 		g.drawString(textToPrint, x+thickness, y+thickness);
@@ -105,7 +111,7 @@ public class Viewer extends JPanel {
 	public void paintComponent(Graphics g) {
 		
 		super.paintComponent(g);
-		CurrentAnimationTime++; // runs animation time step 
+		currentAnimationTime++; // runs animation time step 
 		
 		
 		//Draw player Game Object 
@@ -123,14 +129,31 @@ public class Viewer extends JPanel {
 		drawLevel(g);
 		drawPortals(g);
 		drawSpikes(g);
-		drawLevelName(g);
+		drawDeathObj(g);
 		
 		//Draw player
-		drawPlayer(x, y, width, height, texture, g);		
+		drawPlayer(x, y, width, height, texture, g);	
+		
+		if (Controller.getInstance().getGameOver()) {
+			if (resetGameOver) {
+				lvNameFrame = 0;
+				resetGameOver = false;
+			}
+			boolean finished = drawLevelName(g, true);
+			if (finished) {
+				Controller.getInstance().setGameOverPrinted(true);
+				resetGameOver = true;
+			}
+//			printText("GAME OVER", getResWidth()/2, getResHeight()/4, g, 4);
+		}
+		else {
+			drawLevelName(g, false);
+		}
 	}
 
-	private void drawLevelName(Graphics g) {
+	private boolean drawLevelName(Graphics g, boolean gameOver) {
 		GameLevel level = gameworld.getLevel();
+		boolean finished = false;
 		if (level.getCurrentIndex() != currentScreenIndex) {
 			currentScreenIndex = level.getCurrentIndex();
 			lvNameFrame = 0;
@@ -138,26 +161,37 @@ public class Viewer extends JPanel {
 
 		Integer limit = (int)(getResWidth()*3/5);
 		Integer currentPosition = (int)(getResWidth()/6 + lvNameFrame);
+		
 		double speed;
 		if (currentPosition < limit) {
 			speed = Math.log(limit - currentPosition)*6;
 		}
 		else {
 			speed = 1;
+			finished = true;
 		}
-//		if (currentPosition < limit) {
 			// Create the name string
+		
+		String msgText = "Game Over";
+		if (!gameOver) {
 			Integer currentIndex = level.getCurrentIndex() + 1;
 			StringBuilder title = new StringBuilder();
 			title.append("LEVEL ");
 			title.append("1");
 			title.append(" - ");
 			title.append(currentIndex);
+			msgText = title.toString();
+		}
+
+		if (gameOver) {
+			printText(msgText, getResWidth()/3, getResHeight()/4, g, 6, 90);
+		}
+		else {
+			printText(msgText, getResWidth()/6 + (int)(lvNameFrame), getResHeight()/4, g, 4, 70);
+		}
+		lvNameFrame = (int) (lvNameFrame + speed);
 			
-			// Animation logic
-			printText(title.toString(), getResWidth()/6 + (int)(lvNameFrame), getResHeight()/4, g, 4);
-			lvNameFrame = (int) (lvNameFrame + speed);
-//		}
+		return finished;
 	}
 	
 	private void drawBackground(Graphics g)
@@ -179,7 +213,7 @@ public class Viewer extends JPanel {
 		try {
 			Integer height = getResHeight();
 			Image myImage = ImageIO.read(TextureToLoad);
-			int currentPositionInAnimation = ((int) ((CurrentAnimationTime%20)/10))*64;
+			int currentPositionInAnimation = ((int) ((currentAnimationTime%20)/10))*64;
 			
 			int xStart = -25 + (int)spikes.getCentre().getX();
 			int xEnd = 175 + (int)spikes.getCentre().getX();
@@ -195,6 +229,29 @@ public class Viewer extends JPanel {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		
+	}
+	
+	private void drawDeathObj(Graphics g) {	
+		ArrayList<GameObject> deathObjs = gameworld.getLevel().getDeathObjs();
+		
+		for (GameObject deathObj : deathObjs) {
+			File TextureToLoad = new File(deathObj.getTexture());  
+			try {
+				Integer height = getResHeight();
+				Image myImage = ImageIO.read(TextureToLoad);
+				int currentPositionInAnimation = ((int) ((currentAnimationTime%20)/10))*16;
+				
+				int xStart = (int) (deathObj.getCentre().getX() - deathObj.getWidth()/2);
+				int xEnd = (int) (deathObj.getCentre().getX() + deathObj.getWidth()/2);
+	
+				g.drawImage(myImage, xStart, height*58/64, xEnd, height, currentPositionInAnimation, 0, currentPositionInAnimation + 16, 16, null);
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 	}
@@ -319,12 +376,12 @@ public class Viewer extends JPanel {
 			//The spirte is 32x32 pixel wide and 4 of them are placed together so we need to grab a different one each time 
 			//remember your training :-) computer science everything starts at 0 so 32 pixels gets us to 31  
 			if (direction == 1 || direction == 0 && lastDirection == 1) {
-				int currentPositionInAnimation= ((int) ((CurrentAnimationTime%40)/10))*32; //slows down animation so every 10 frames we get another frame so every 100ms 
+				int currentPositionInAnimation= ((int) ((currentAnimationTime%40)/10))*32; //slows down animation so every 10 frames we get another frame so every 100ms 
 				if (direction == 0) currentPositionInAnimation = 0;
 				g.drawImage(myImage, x,y, x+width, y+height, currentPositionInAnimation, 0, currentPositionInAnimation + 31, 32, null); 
 			}
 			else if (direction == -1 || direction == 0 && lastDirection == -1) {
-				int currentPositionInAnimation= ((int) ((CurrentAnimationTime%40)/10))*32; //slows down animation so every 10 frames we get another frame so every 100ms 
+				int currentPositionInAnimation= ((int) ((currentAnimationTime%40)/10))*32; //slows down animation so every 10 frames we get another frame so every 100ms 
 				if (direction == 0) currentPositionInAnimation = 0;
 				g.drawImage(myImage, x,y, x+width, y+height, currentPositionInAnimation, 96, currentPositionInAnimation + 31, 128, null); 
 			}			

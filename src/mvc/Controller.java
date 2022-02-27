@@ -38,6 +38,7 @@ public class Controller implements KeyListener {
 	   private static boolean KeyWPressed= false;
 	   private static boolean KeySpacePressed= false;
 	   private static boolean gameOver = false;
+	   private static boolean gameOverPrinted = false;
 	   
 	   private static final Controller instance = new Controller();
 	   
@@ -75,6 +76,7 @@ public class Controller implements KeyListener {
 	
 	public void reset() {
 		gameOver = false;
+		gameOverPrinted = false;
 	}
 	
 	public void setGameOver() {
@@ -83,6 +85,15 @@ public class Controller implements KeyListener {
 	
 	public boolean getGameOver() {
 		return gameOver;
+	}
+	
+	public void setGameOverPrinted(boolean printed) {
+		gameOverPrinted = printed;	
+	}
+	
+	public boolean getGameOverPrinted() {
+		return gameOverPrinted;
+		
 	}
 
 	@Override

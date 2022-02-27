@@ -12,12 +12,15 @@ public class LevelScreen {
 	
 	private ArrayList<GameObject> obstacles = new ArrayList<GameObject>();
 	private ArrayList<Portal> portals = new ArrayList<Portal>();
+	private ArrayList<GameObject> buttons = new ArrayList<GameObject>();
 	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
+	private ArrayList<GameObject> deathObjs = new ArrayList<GameObject>();
 	private GameObject door;
 	
 	public LevelScreen(GameObject lowerFloor, GameObject upperFloor, GameObject spikes, 
 					   ArrayList<Portal> portals, ArrayList<GameObject> objects,
-					   ArrayList<GameObject> obstacles, GameObject door) {
+					   ArrayList<GameObject> obstacles, ArrayList<GameObject> deathObjs, 
+					   ArrayList<GameObject> buttons, GameObject door) {
 		this.lowerFloor = lowerFloor;
 		this.upperFloor = upperFloor;
 		this.spikes = spikes;
@@ -25,6 +28,8 @@ public class LevelScreen {
 		this.objects = objects;
 		this.door = door;
 		this.obstacles = obstacles;
+		this.deathObjs = deathObjs;
+		this.buttons = buttons;
 	}
 	
 	public GameObject getDoor() {
@@ -45,6 +50,10 @@ public class LevelScreen {
 		
 	public GameObject getSpikes() {
 		return spikes;
+	}
+	
+	public ArrayList<GameObject> getDeathObjs() {
+		return deathObjs;
 	}
 	
 	public GameObject getLowerFloor() {

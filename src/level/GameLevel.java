@@ -23,6 +23,10 @@ public class GameLevel {
 		updateCurrentScreen();
 	}
 	
+	public ArrayList<GameObject> getDeathObjs() {
+		return currentScreen.getDeathObjs();
+	}
+	
 	public Integer getResWidth() {
 		return resWidth;
 	}

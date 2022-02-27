@@ -148,14 +148,14 @@ public class Player extends GameObject {
 		movingDirection = 0;
 		if(Controller.getInstance().isKeyAPressed()){
 			movingDirection = -1;
-			this.getCentre().ApplyVector( new Vector3f(-4,0,0), gameLevel.getObstacles(), gameLevel.getPlayerOnUpper(), lastMovingDirection); 
+			this.getCentre().ApplyVector( new Vector3f(-5,0,0), gameLevel.getObstacles(), gameLevel.getPlayerOnUpper(), lastMovingDirection); 
 			lastMovingDirection = -1;
 		}
 		
 		if(Controller.getInstance().isKeyDPressed())
 		{
 			movingDirection = 1;
-			this.getCentre().ApplyVector( new Vector3f(4,0,0), gameLevel.getObstacles(), gameLevel.getPlayerOnUpper(), lastMovingDirection);
+			this.getCentre().ApplyVector( new Vector3f(5,0,0), gameLevel.getObstacles(), gameLevel.getPlayerOnUpper(), lastMovingDirection);
 			lastMovingDirection = 1;
 		}
 
@@ -165,7 +165,7 @@ public class Player extends GameObject {
 		if(Controller.getInstance().isKeySpacePressed() && jumpingIterations == 0 && canJumpAgain)
 		{
 			canJumpAgain = false;
-			jumpingIterations = 15;
+			jumpingIterations = 20;
 			this.getCentre().ApplyVector( new Vector3f(0,15,0));
 			//CreateBullet();
 			Controller.getInstance().setKeySpacePressed(false);
@@ -176,9 +176,8 @@ public class Player extends GameObject {
 		}
 		
 		// Gravity
-		// TODO: use collision with floor instead of hardcoded coordinate
 		if (isOnAir(gameLevel)) {
-			this.getCentre().ApplyVector(new Vector3f(0,-6,0));
+			this.getCentre().ApplyVector(new Vector3f(0,-5,0));
 		}
 		else {
 			canJumpAgain = true;

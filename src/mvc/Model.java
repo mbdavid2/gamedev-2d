@@ -48,7 +48,7 @@ public class Model {
 	private Integer resWidth;
 	private Integer resHeight;
 
-	public Model(Integer resWidth, Integer resHeight) {
+   	public Model(Integer resWidth, Integer resHeight) {
 		//setup game world 
 		this.resWidth = resWidth;
 		this.resHeight = resHeight;
@@ -93,6 +93,9 @@ public class Model {
 		playerLogic(); 
 			
 		fireLogic();
+		deathObjLogic();
+		System.out.println("Printed:" + Controller.getInstance().getGameOverPrinted() + " Over: " + Controller.getInstance().getGameOver());
+		if (Controller.getInstance().getGameOverPrinted()) return false;
 		return Controller.getInstance().getGameOver();
 	}
 
@@ -101,6 +104,19 @@ public class Model {
 		gameLevel.getSpikes().getCentre().ApplyVector(new Vector3f(1f, 0, 0));
 		if (gameLevel.getSpikes().getCentre().getX() > player.getCentre().getX() - player.getWidth()/2) {
 			Controller.getInstance().setGameOver();
+		}
+	}
+	
+	private void deathObjLogic() {
+		for (GameObject deathObj : gameLevel.getDeathObjs()) {
+			if (deathObj.getObjectOnUpper() == gameLevel.getPlayerOnUpper() && !player.isOnAir(gameLevel)) {
+				// Check same position
+				
+				if (player.getCentre().getX() + player.getWidth()*2/3 > deathObj.getCentre().getX() - deathObj.getWidth()/2 &&
+					player.getCentre().getX() + player.getWidth()*2/3 < deathObj.getCentre().getX() + deathObj.getWidth()/2) {
+					Controller.getInstance().setGameOver();
+				}
+			}
 		}
 	}
 	

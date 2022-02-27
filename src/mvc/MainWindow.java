@@ -1,6 +1,7 @@
 package mvc;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -96,12 +97,21 @@ public class MainWindow {
 			}   
 			 
 	       frame.add(startMenuButton);  
-	       frame.setVisible(true);  
 	       
-	       JPanel panel = new JPanel();
-	       JLabel label = new JLabel("Your text here");
-	       panel.add(label);
-	       frame.add(panel);
+//	       JPanel panel = new JPanel();
+////	       panel.setLocation(150, 150);
+//	       JLabel label = new JLabel("Your text here");
+//	       label.setFont(new Font("UPHEAVAL TT -BRK-", Font.BOLD, 70)); 
+////	       label.setColor(Color.BLACK);
+//	       label.setVisible(true);
+//	       panel.add(label);
+//	       panel.setBounds(240, 200, 200, 40); 
+//	       panel.setVisible(true);
+//	       frame.add(panel);
+	       
+	       frame.setVisible(true);  
+	       System.out.println("Done");
+	      
 //	       Viewer.printText("Working Title", resWidth/2, resHeight/2, frame.getGraphics(), 4);
 	}
 
@@ -127,19 +137,29 @@ public class MainWindow {
 			//UNIT test to see if framerate matches 
 		 UnitTests.CheckFrameRate(System.currentTimeMillis(),FrameCheck, TargetFPS);
 		 
-		 if (gameOver) {
+		 boolean gameOverDone = false;
+		 
+		// Print the game over sign
+		 if (gameOver && !gameOverDone) {
 			startGame = false;
-			buttonMessage = "Restart";
+			
+			gameOver = gameloop();
+			gameOverDone = !gameOver;
+		 }
+		 
+		 // Once the sign has been printed, restart
+		 if (gameOverDone && startGame == false) {
+			 buttonMessage = "Restart";
 //			 frame = new JFrame("Game");   // Change to the name of your game 
 			 gameworld = new Model(resWidth, resHeight);
-			 canvas = new  Viewer(gameworld);
+			 canvas = new Viewer(gameworld);
 //			 Controller.reset();
 //			gameworld = new Model(resWidth, resHeight);
 //			canvas = new Viewer(gameworld); 
-			hello = new MainWindow();
+			 hello = new MainWindow();
 			gameOver = false;
-		 }
-			  
+		 }			 
+		 
 		}
 		
 		
@@ -162,8 +182,6 @@ public class MainWindow {
 		 frame.setTitle("Score =  "+ gameworld.getScore()); 
 		 
 		 return gameOver;
-		
-		 
 	}
 
 }
