@@ -43,7 +43,7 @@ public class Model {
 	 private CopyOnWriteArrayList<GameObject> EnemiesList  = new CopyOnWriteArrayList<GameObject>();
 	 private CopyOnWriteArrayList<GameObject> BulletList  = new CopyOnWriteArrayList<GameObject>();
 	 private int Score = 0; 
-	 private Integer currentLevel = 3; // The id of the level we start at
+	 private Integer currentLevel = 4; // The id of the level we start at
 	 private Integer deaths = 0;
 	 
 	private Integer resWidth;
@@ -89,6 +89,9 @@ public class Model {
 		else if (currentLevel == 3) {
 			gameLevel = levelCreator.createLevel3(deaths);
 		}
+		else if (currentLevel == 4) {
+			gameLevel = levelCreator.createLevel4(deaths);
+		}
 		
 	}
 	
@@ -109,6 +112,7 @@ public class Model {
 		boolean nextScreen = playerLogic(); 
 			
 		fireLogic();
+		enemyLogic();
 //		objectLogic();
 		deathObjLogic();
 		keyLogic();
@@ -150,6 +154,18 @@ public class Model {
 		return false;
 	}
 	
+	private boolean isObjectOnObject(GameObject obj1, GameObject obj2) {
+		if (obj1.getObjectOnUpper() == obj2.getObjectOnUpper() && !obj1.isObjOnAir(gameLevel) && !obj2.isObjOnAir(gameLevel)) {
+			
+			// Check same position
+			if (obj1.getCentre().getX() + obj1.getWidth()*1/3 > obj2.getCentre().getX() - obj2.getWidth()/2 &&
+					obj1.getCentre().getX() + obj1.getWidth()*1/3 < obj2.getCentre().getX() + obj2.getWidth()/2) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	private void keyLogic() {
 		if (gameLevel.hasKey() && !gameLevel.getPlayerHasKey()) {
 			if (isPlayerOnObject(gameLevel.getKey())) {
@@ -168,6 +184,14 @@ public class Model {
 				}
 			}
 			
+			for (GameObject obj : gameLevel.getEnemies()) {
+				if (obj.getObjectOnUpper() == button.getObjectOnUpper()) {
+					if (isObjectOnObject(obj, button)) {
+						isCrateOnButton = true;
+					}
+				}
+			}
+			
 			boolean isPressed = isPlayerOnObject(button) || isCrateOnButton;
 			button.setIsPressed(isPressed);
 		}
@@ -177,6 +201,19 @@ public class Model {
 		gameLevel.getSpikes().getCentre().ApplyVector(new Vector3f(0.75f, 0, 0));
 		if (gameLevel.getSpikes().getCentre().getX() > player.getCentre().getX() - player.getWidth()/2) {
 			Controller.getInstance().setGameOver();
+		}
+	}
+	
+	private void enemyLogic() {
+		for (GameObject obj : gameLevel.getEnemies()) {
+			if (obj.isObjOnAir(gameLevel)) {
+				// Gravity
+				obj.getCentre().ApplyVector(new Vector3f(0,-6,0));
+			}
+			obj.getCentre().ApplyVector(new Vector3f(-0.8f, 0, 0));
+			if (isPlayerOnObject(obj)) {
+				Controller.getInstance().setGameOver();
+			}
 		}
 	}
 	

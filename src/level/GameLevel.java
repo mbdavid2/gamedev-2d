@@ -66,6 +66,10 @@ public class GameLevel {
 		currentScreen.setPlayerGotKeyUpper();
 	}
 	
+	public ArrayList<GameObject> getEnemies() {
+		return currentScreen.getEnemies();
+	}
+	
 	public Integer getResWidth() {
 		return resWidth;
 	}

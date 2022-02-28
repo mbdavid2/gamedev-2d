@@ -130,27 +130,16 @@ public class Viewer extends JPanel {
 		drawSpikes(g);
 		drawDeathObj(g);
 		
-		//Draw player
-		drawPlayer(x, y, width, height, texture, g);	
+		//Draw player and enemies
+		drawPlayer(x, y, width, height, texture, g);
+		drawEnemies(g);
 		
 		if (Controller.getInstance().getGameOver()) {
 			lvNameFrame = 0;
 			Controller.getInstance().reset();
 		}
-//			if (resetGameOver) {
-//				lvNameFrame = 0;
-//				resetGameOver = false;
-//			}
-//			boolean finished = drawLevelName(g, true);
-//			if (finished) {
-//				Controller.getInstance().setGameOverPrinted(true);
-//				resetGameOver = true;
-//			}
-////			printText("GAME OVER", getResWidth()/2, getResHeight()/4, g, 4);
-//		}
-//		else {
-			drawLevelName(g, false);
-//		}
+
+		drawLevelName(g, false);
 	}
 
 	private boolean drawLevelName(Graphics g, boolean gameOver) {
@@ -364,8 +353,7 @@ public class Viewer extends JPanel {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 	private void drawObjects(Graphics g) {
 		GameLevel level = gameworld.getLevel();
 		
@@ -441,6 +429,33 @@ public class Viewer extends JPanel {
 			myImageLower = ImageIO.read(TextureToLoad);
 			g.drawImage(myImageLower, 0, height*3/8, width, height/2, 0, 0, 312, 20, null);			
 
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void drawEnemies(Graphics g) {
+		GameLevel level = gameworld.getLevel();
+		
+		try {
+			File TextureToLoad;
+			Image myImage;
+			
+			// Print the objects (crates, keys...)
+			for (GameObject obj : level.getEnemies()) {
+				TextureToLoad = new File(obj.getTexture());
+				myImage = ImageIO.read(TextureToLoad);
+				
+				int currentPositionInAnimation= 14*32 + ((int) ((currentAnimationTime%40)/10))*32;
+				int x = (int) obj.getCentre().getX();
+				int y = (int) obj.getCentre().getY();
+				int width = (int) obj.getWidth();
+				int height = (int) obj.getHeight();
+				g.drawImage(myImage, x,y, x+width, y+height, currentPositionInAnimation, 160, currentPositionInAnimation + 31, 192, null);
+				System.out.println(currentPositionInAnimation);
+			}			
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

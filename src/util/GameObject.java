@@ -1,4 +1,7 @@
 package util;
+
+import level.GameLevel;
+
 /*
  * Created by Abraham Campbell on 15/01/2020.
  *   Copyright (c) 2020  Abraham Campbell
@@ -54,6 +57,18 @@ public class GameObject {
 		 this.centre =centre;
 		 this.isObjectOnUpper = isObjectOnUpper;
 	}
+    
+    public boolean isObjOnAir(GameLevel gameLevel)  {
+    	if (this.isObjectOnUpper) {
+    		GameObject upper = gameLevel.getUpperFloor();
+    		return this.getCentre().getY() + getHeight()/1.5 < upper.getCentre().getY() - upper.getHeight();
+    	}
+    	else {
+    		GameObject lower = gameLevel.getLowerFloor();
+    		return this.getCentre().getY() + getHeight()/1.5 < lower.getCentre().getY() - lower.getHeight();
+    	}
+    	
+    }
     
     public GameObject copy() {
     	return new GameObject(textureLocation, width, height, centre.copy(), isObjectOnUpper);

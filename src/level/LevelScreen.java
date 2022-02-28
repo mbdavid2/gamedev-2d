@@ -16,6 +16,7 @@ public class LevelScreen {
 	private ArrayList<GameObject> buttons = new ArrayList<GameObject>();
 	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	private ArrayList<GameObject> deathObjs = new ArrayList<GameObject>();
+	private ArrayList<GameObject> enemies = new ArrayList<GameObject>();
 	private Point3f originalSpikeCenter;
 	private GameObject key;
 	private GameObject originalKey;
@@ -64,6 +65,14 @@ public class LevelScreen {
 		Point3f centre = spikes.getCentre();
 		this.originalKey = key.copy();
 		this.originalSpikeCenter = new Point3f(centre.getX(), centre.getY(), centre.getZ()).copy();
+	}
+	
+	public void setEnemies(ArrayList<GameObject> enemies) {
+		this.enemies = enemies;
+	}
+	
+	public ArrayList<GameObject> getEnemies() {
+		return enemies;
 	}
 	
 	public void resetScreen() {
