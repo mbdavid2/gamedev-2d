@@ -54,6 +54,10 @@ public class GameObject {
 		 this.centre =centre;
 		 this.isObjectOnUpper = isObjectOnUpper;
 	}
+    
+    public GameObject copy() {
+    	return new GameObject(textureLocation, width, height, centre.copy(), isObjectOnUpper);
+    }
 
     public boolean getObjectOnUpper() {
     	return isObjectOnUpper;

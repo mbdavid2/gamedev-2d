@@ -43,7 +43,7 @@ public class Model {
 	 private CopyOnWriteArrayList<GameObject> EnemiesList  = new CopyOnWriteArrayList<GameObject>();
 	 private CopyOnWriteArrayList<GameObject> BulletList  = new CopyOnWriteArrayList<GameObject>();
 	 private int Score = 0; 
-	 private Integer currentLevel = 1;
+	 private Integer currentLevel = 3; // The id of the level we start at
 	 private Integer deaths = 0;
 	 
 	private Integer resWidth;
@@ -79,13 +79,15 @@ public class Model {
 	}
 	
 	private void createLevel(Integer currentLevel) {
-		System.out.println(currentLevel);
 		LevelCreator levelCreator = new LevelCreator(resWidth, resHeight);
 		if (currentLevel == 1) {
 			gameLevel = levelCreator.createLevel1(deaths);
 		}
 		else if (currentLevel == 2) {
 			gameLevel = levelCreator.createLevel2(deaths);
+		}
+		else if (currentLevel == 3) {
+			gameLevel = levelCreator.createLevel3(deaths);
 		}
 		
 	}
@@ -118,16 +120,11 @@ public class Model {
 			reset();
 		}
 		
-		if (nextScreen) {
-			System.out.println("Next screen");
-		}
-		
 		// If we have finished the level, move to the next
 		if (nextScreen && gameLevel.getFinished()) {
-			System.out.println("Current level: " + currentLevel);
-			System.out.println("Moving to next level");
+			System.out.println("Moving to level " + (currentLevel + 1));
 			currentLevel++;
-			if (currentLevel >= 2) {
+			if (currentLevel >= 4) {
 				gameFinished = true;
 			}
 			reset();
@@ -157,6 +154,7 @@ public class Model {
 		if (gameLevel.hasKey() && !gameLevel.getPlayerHasKey()) {
 			if (isPlayerOnObject(gameLevel.getKey())) {
 				gameLevel.setPlayerHasKey();
+				if (gameLevel.getPlayerOnUpper()) gameLevel.setGotKeyUpper(); // For level 3 loop!
 			}
 		}
 	}

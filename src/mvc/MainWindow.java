@@ -115,7 +115,6 @@ public class MainWindow {
 	        File BackroundToLoad = new File(titleScreen);  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
 	        File BackroundCredits = new File("res/credits-screen.png");
 	        try {
-	        	System.out.println("Printing again");
 				 BufferedImage myPicture = ImageIO.read(BackroundToLoad);
 				 BackgroundImageForStartMenu = new JLabel(new ImageIcon(myPicture));
 				 BackgroundImageForStartMenu.setBounds(0, 0, resWidth, resHeight);

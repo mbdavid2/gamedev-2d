@@ -18,9 +18,11 @@ public class LevelScreen {
 	private ArrayList<GameObject> deathObjs = new ArrayList<GameObject>();
 	private Point3f originalSpikeCenter;
 	private GameObject key;
+	private GameObject originalKey;
 	private boolean hasKey = false;
 	private GameObject door;
 	public boolean playerHasKey = false;
+	private boolean playerGotKeyOnUpper = false;
 	
 	private String name = "no_name";
 	
@@ -38,6 +40,7 @@ public class LevelScreen {
 		this.deathObjs = deathObjs;
 		this.buttons = buttons;
 		this.playerHasKey = false;
+		this.playerGotKeyOnUpper = false;
 		Point3f centre = spikes.getCentre();
 		this.originalSpikeCenter = new Point3f(centre.getX(), centre.getY(), centre.getZ()).copy();
 	}
@@ -59,11 +62,16 @@ public class LevelScreen {
 		this.hasKey = true;
 		this.playerHasKey = false;
 		Point3f centre = spikes.getCentre();
+		this.originalKey = key.copy();
 		this.originalSpikeCenter = new Point3f(centre.getX(), centre.getY(), centre.getZ()).copy();
 	}
 	
 	public void resetScreen() {
 		spikes.setCentre(this.originalSpikeCenter.copy());
+		if (hasKey) {
+			playerHasKey = false;
+			key = originalKey.copy();
+		}
 	}
 	
 	public void setPlayerHasKey() {
@@ -72,6 +80,14 @@ public class LevelScreen {
 	
 	public boolean getPlayerHasKey() {
 		return playerHasKey;
+	}
+	
+	public boolean getPlayerGotKeyUpper() {
+		return playerGotKeyOnUpper;
+	}
+	
+	public void setPlayerGotKeyUpper() {
+		playerGotKeyOnUpper = true;
 	}
 	
 	public boolean hasKey() {

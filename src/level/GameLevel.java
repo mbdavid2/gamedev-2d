@@ -15,6 +15,7 @@ public class GameLevel {
 	private LevelScreen currentScreen;
 	
 	private Integer levelNumber = 1;
+	private boolean level3Completed = false;
 	
 	private boolean finished = false;
 	
@@ -61,6 +62,10 @@ public class GameLevel {
 		return currentScreen.getPlayerHasKey();
 	}
 	
+	public void setGotKeyUpper() {
+		currentScreen.setPlayerGotKeyUpper();
+	}
+	
 	public Integer getResWidth() {
 		return resWidth;
 	}
@@ -95,17 +100,28 @@ public class GameLevel {
 	
 	public void moveNextScreen() {
 		portalsEnabled = false;
-		currentScreenIndex++;
-		currentScreen.resetScreen();
-		if (currentScreenIndex == -1 || currentScreenIndex >= screens.size()) {
-			finished = true;
-			System.out.println("No more screens in this level!!");
-			currentScreenIndex = -1;
+		// Special logic for level 3 loop
+		if (level3Completed || levelNumber != 3 || currentScreen.getPlayerGotKeyUpper()) {
+			if (levelNumber == 3 && !level3Completed) {
+				level3Completed = true;
+				currentScreenIndex = 0;
+			}
+			currentScreenIndex++;
+			System.out.println("Moving to screen " + (currentScreenIndex+1) + " out of " + screens.size());
+			currentScreen.resetScreen();
+			if (currentScreenIndex == -1 || currentScreenIndex >= screens.size()) {
+				finished = true;
+				System.out.println("No more screens in this level!!");
+				currentScreenIndex = -1;
+			}
+			else updateCurrentScreen();
+			portalsEnabled = true;
 		}
-		else updateCurrentScreen();
-		System.out.println("Finished:" + finished);
-		System.out.println("-------------------------------");
-		portalsEnabled = true;
+		else {
+			currentScreenIndex++;
+			currentScreen.resetScreen();
+			portalsEnabled = true;
+		}
 	}
 	
 	public Portal getPortal(Integer portalIndex) {
@@ -113,15 +129,24 @@ public class GameLevel {
 	}
 	
 	public boolean hasName() {
-		return currentScreen.hasName();
+		return ((levelNumber == 3 && !level3Completed) || currentScreen.hasName());
 	}
 	
 	public String getName() {
-		return currentScreen.getName();
+//		System.out.println(levelNumber + " " + currentScreenIndex);
+		if (levelNumber == 3 && !level3Completed) {
+			if (currentScreenIndex == 0) return "New level";
+			if (currentScreenIndex == 2) return "New...level?";
+			if (currentScreenIndex == 3) return "Maybe...";
+			if (currentScreenIndex == 4) return "there's another way?";
+			if (currentScreenIndex == 5) return "Mmmmm...";
+			if (currentScreenIndex >= 8) return "Don't be so eager...";
+			return "";
+		}
+		else return currentScreen.getName();
 	}
 	
 	private void updateCurrentScreen() {
-		System.out.println("Moving to screen " + (currentScreenIndex+1) + " out of " + screens.size());
 		currentScreen = screens.get(currentScreenIndex);
 	}
 	
