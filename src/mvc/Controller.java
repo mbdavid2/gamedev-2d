@@ -36,6 +36,7 @@ public class Controller implements KeyListener {
 	   private static boolean KeySPressed= false;
 	   private static boolean KeyDPressed= false;
 	   private static boolean KeyWPressed= false;
+	   private static boolean WasdControll = true;
 	   private static boolean KeySpacePressed= false;
 	   private static boolean gameOver = false;
 	   private static boolean gameOverPrinted = false;
@@ -58,20 +59,39 @@ public class Controller implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) 
 	{ 
-		switch (e.getKeyChar()) 
-		{
-			case 'a':setKeyAPressed(true);break;  
-			case 's':setKeySPressed(true);break;
-			case 'w':setKeyWPressed(true);break;
-			case 'd':setKeyDPressed(true);break;
-			case ' ':setKeySpacePressed(true);break;   
-		    default:
-		    	//System.out.println("Controller test:  Unknown key pressed");
-		        break;
-		}  
-		
-	 // You can implement to keep moving while pressing the key here . 
-		
+		if (WasdControll) {
+			switch (e.getKeyChar()) 
+			{
+				case 'a':setKeyAPressed(true);break;  
+				case 's':setKeySPressed(true);break;
+				case 'w':setKeyWPressed(true);break;
+				case 'd':setKeyDPressed(true);break;
+				case 'A':setKeyAPressed(true);break;  
+				case 'S':setKeySPressed(true);break;
+				case 'W':setKeyWPressed(true);break;
+				case 'D':setKeyDPressed(true);break;
+				case 'c':setWASDControll(true);break;
+				case 'C':setWASDControll(true);break;
+				case 'v':setWASDControll(false);break;
+				case 'V':setWASDControll(false);break;
+				case ' ':setKeySpacePressed(true);break;   
+			    default:
+			    	//System.out.println("Controller test:  Unknown key pressed");
+			        break;
+			} 
+		}
+		else {
+			switch (e.getKeyCode()) 
+			{
+				case KeyEvent.VK_LEFT: setKeyAPressed(true);break;  
+				case KeyEvent.VK_DOWN: setKeySPressed(true);break;
+				case KeyEvent.VK_UP: setKeyWPressed(true);break;
+				case KeyEvent.VK_RIGHT: setKeyDPressed(true);break;
+			    default:
+			    	//System.out.println("Controller test:  Unknown key pressed");
+			        break;
+			}  
+		}	
 	}
 	
 	public void reset() {
@@ -99,19 +119,35 @@ public class Controller implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) 
 	{ 
-		switch (e.getKeyChar()) 
-		{
-			case 'a':setKeyAPressed(false);break;  
-			case 's':setKeySPressed(false);break;
-			case 'w':setKeyWPressed(false);break;
-			case 'd':setKeyDPressed(false);break;
-			case ' ':setKeySpacePressed(false);break;   
-		    default:
-		    	//System.out.println("Controller test:  Unknown key pressed");
-		        break;
-		}  
-		 //upper case 
-	
+		if (WasdControll) {
+			switch (e.getKeyChar()) 
+			{
+				case 'a':setKeyAPressed(false);break;  
+				case 's':setKeySPressed(false);break;
+				case 'w':setKeyWPressed(false);break;
+				case 'd':setKeyDPressed(false);break;
+				case 'A':setKeyAPressed(false);break;  
+				case 'S':setKeySPressed(false);break;
+				case 'W':setKeyWPressed(false);break;
+				case 'D':setKeyDPressed(false);break;
+				case ' ':setKeySpacePressed(false);break;   
+			    default:
+			    	//System.out.println("Controller test:  Unknown key pressed");
+			        break;
+			} 
+		}
+		else {
+			switch (e.getKeyCode()) 
+			{
+				case KeyEvent.VK_LEFT: setKeyAPressed(false);break;  
+				case KeyEvent.VK_DOWN: setKeySPressed(false);break;
+				case KeyEvent.VK_UP: setKeyWPressed(false);break;
+				case KeyEvent.VK_RIGHT: setKeyDPressed(false);break;
+			    default:
+			    	//System.out.println("Controller test:  Unknown key pressed");
+			        break;
+			} 
+		}		
 	}
 
 
@@ -142,6 +178,10 @@ public class Controller implements KeyListener {
 
 	public void setKeyDPressed(boolean keyDPressed) {
 		KeyDPressed = keyDPressed;
+	}
+
+	public void setWASDControll(boolean wasdControll) {
+		WasdControll = wasdControll;
 	}
 
 

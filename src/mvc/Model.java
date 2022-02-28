@@ -78,12 +78,13 @@ public class Model {
 	}
 	
 	private void createLevel(Integer currentLevel) {
+		System.out.println(currentLevel);
 		LevelCreator levelCreator = new LevelCreator(resWidth, resHeight);
 		if (currentLevel == 1) {
 			gameLevel = levelCreator.createLevel1(deaths);
 		}
-		else {
-			gameLevel = levelCreator.createLevel1(deaths);
+		else if (currentLevel == 2) {
+			gameLevel = levelCreator.createLevel2(deaths);
 		}
 		
 	}
@@ -99,6 +100,7 @@ public class Model {
 	// This is the heart of the game , where the model takes in all the inputs ,decides the outcomes and then changes the model accordingly. 
 	public boolean gamelogic() 
 	{
+//		System.out.println(gameLevel.getCurrentIndex());
 		// Player Logic first 
 //		System.out.println("Player now: " + player.getCentre());
 		playerLogic(); 
@@ -111,6 +113,13 @@ public class Model {
 		// Reset the level if gameOver
 		if (Controller.getInstance().getGameOver()) {
 			if (gameLevel.getCurrentIndex() >= 2) deaths++;
+			reset();
+		}
+		
+		// If we have finished the level, move to the next
+		if (gameLevel.getCurrentIndex() == -1) {
+			System.out.println("Moving to next level");
+			currentLevel++;
 			reset();
 		}
 		

@@ -85,7 +85,7 @@ public class MainWindow {
 //	        startMenuButton.setBackground(Color.BLUE);
 	        
 	        //loading background image 
-	        File BackroundToLoad = new File("res/exterior-parallaxBG1.v2.png");  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
+	        File BackroundToLoad = new File("res/title-screen.png");  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
 			try {
 				 
 				 BufferedImage myPicture = ImageIO.read(BackroundToLoad);
@@ -138,28 +138,28 @@ public class MainWindow {
 			//UNIT test to see if framerate matches 
 		 UnitTests.CheckFrameRate(System.currentTimeMillis(),FrameCheck, TargetFPS);
 		 
-		 boolean gameOverDone = false;
-		 
-		// Print the game over sign
-		 if (gameOver && !gameOverDone) {
-			startGame = false;
-			
-			gameOver = gameloop();
-			gameOverDone = !gameOver;
-		 }
-		 
-		 // Once the sign has been printed, restart
-		 if (gameOverDone && startGame == false) {
-			 buttonMessage = "Restart";
-//			 frame = new JFrame("Game");   // Change to the name of your game 
-			 gameworld = new Model(resWidth, resHeight);
-			 canvas = new Viewer(gameworld);
-//			 Controller.reset();
-//			gameworld = new Model(resWidth, resHeight);
-//			canvas = new Viewer(gameworld); 
-			 hello = new MainWindow();
-			gameOver = false;
-		 }			 
+//		 boolean gameOverDone = false;
+//		 
+//		// Print the game over sign
+//		 if (gameOver && !gameOverDone) {
+//			startGame = false;
+//			
+//			gameOver = gameloop();
+//			gameOverDone = !gameOver;
+//		 }
+//		 
+//		 // Once the sign has been printed, restart
+//		 if (gameOverDone && startGame == false) {
+//			 buttonMessage = "Restart";
+////			 frame = new JFrame("Game");   // Change to the name of your game 
+//			 gameworld = new Model(resWidth, resHeight);
+//			 canvas = new Viewer(gameworld);
+////			 Controller.reset();
+////			gameworld = new Model(resWidth, resHeight);
+////			canvas = new Viewer(gameworld); 
+//			 hello = new MainWindow();
+//			gameOver = false;
+//		 }			 
 		 
 		}
 		

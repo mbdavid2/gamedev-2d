@@ -181,7 +181,7 @@ public class Viewer extends JPanel {
 			Integer currentIndex = level.getCurrentIndex() + 1;
 			StringBuilder title = new StringBuilder();
 			title.append("LEVEL ");
-			title.append("1");
+			title.append(level.getLevelNumber());
 			title.append(" - ");
 			title.append(currentIndex);
 			msgText = title.toString();
@@ -275,15 +275,15 @@ public class Viewer extends JPanel {
 			}
 			
 			// Print button prompt if first level
-			if (level.getCurrentIndex() == 0) {
+			if (level.getCurrentIndex() == 0 && level.getLevelNumber() == 1) {
 				Integer portalIndex = level.playerCanSwitch(gameworld.getPlayer().getCentre().getX() + gameworld.getPlayer().getWidth()*2/3);
 				if (portalIndex != -1) {
 					Portal p = level.getPortal(portalIndex);
 					if (level.getPlayerOnUpper()) {
-						TextureToLoad = new File("res/s_key_bg.png");
+						TextureToLoad = new File("res/keys/s_key_bg.png");
 					}
 					else {
-						TextureToLoad = new File("res/w_key_bg.png");
+						TextureToLoad = new File("res/keys/w_key_bg.png");
 					}
 					portalImage = ImageIO.read(TextureToLoad);
 					Integer portalCenter = (int) (p.getStart() + (p.getEnd() - p.getStart())/2);
@@ -322,7 +322,7 @@ public class Viewer extends JPanel {
 			g.drawImage(doorImage, x, y, x + door.getWidth(), y + door.getHeight(), 0, 0, 57, 77, null);
 			
 			// Print button prompt if first level
-			if (level.getCurrentIndex() == 0) {
+			if (level.getCurrentIndex() == 0 && level.getLevelNumber() == 1) {
 				if (gameworld.getPlayer().isWithinDoor(level)) {
 					openDoor = new File("res/level/doorW.png");
 					doorImage = ImageIO.read(openDoor);

@@ -14,13 +14,25 @@ public class GameLevel {
 	private ArrayList<LevelScreen> screens = new ArrayList<LevelScreen>();
 	private LevelScreen currentScreen;
 	
+	private Integer levelNumber = 1;
+	
 	public Integer getCurrentIndex() {
 		return currentScreenIndex;
+	}
+	
+	public Integer getLevelNumber() {
+		return levelNumber;
 	}
 	
 	public GameLevel(ArrayList<LevelScreen> levelScreens) {
 		this.screens = levelScreens;
 		updateCurrentScreen();
+	}
+	
+	public GameLevel(ArrayList<LevelScreen> levelScreens, Integer levelNumber) {
+		this.screens = levelScreens;
+		updateCurrentScreen();
+		this.levelNumber = levelNumber;
 	}
 	
 	public ArrayList<GameObject> getDeathObjs() {
@@ -62,7 +74,7 @@ public class GameLevel {
 	public void moveNextScreen() {
 		portalsEnabled = false;
 		currentScreenIndex++;
-//		doorEnabled = true;
+		if (currentScreenIndex >= screens.size()) currentScreenIndex = -1;
 		updateCurrentScreen();
 		portalsEnabled = true;
 	}
@@ -80,8 +92,11 @@ public class GameLevel {
 	}
 	
 	private void updateCurrentScreen() {
-		System.out.println("Moving to screen " + currentScreenIndex + " out of " + screens.size());
-		currentScreen = screens.get(currentScreenIndex);
+		System.out.println("Moving to screen " + (currentScreenIndex+1) + " out of " + screens.size());
+		if (currentScreenIndex != -1) {
+			currentScreen = screens.get(currentScreenIndex);
+		}
+		else System.out.println("No more screens in this level!!");
 	}
 	
 	public ArrayList<Portal> getPortals() {

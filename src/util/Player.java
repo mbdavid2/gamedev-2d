@@ -61,11 +61,11 @@ public class Player extends GameObject {
 			}
 		}
 		
-		return doorOpen && sameLevel && (getCentre().getX() > doorLeft && getCentre().getX() < doorRight);
+		return doorOpen && sameLevel 
+			   && (getCentre().getX() - this.getWidth()*2/5 > doorLeft && getCentre().getX() - this.getWidth()*2/5 < doorRight);
 	}
 	
 	public void resetPlayer(GameLevel gameLevel) {
-		System.out.println("hola " + this.originalCenter);
 		this.setCentre(this.originalCenter.copy());
 		gameLevel.setPlayerOnUpper(false);
 	}
@@ -95,7 +95,7 @@ public class Player extends GameObject {
 		if(Controller.getInstance().isKeyWPressed() && !movedNextLevel)
 		{	
 			jumpingIterations = 0; // Cancel the jump
-			Integer portalIndex = gameLevel.playerCanSwitch(this.getCentre().getX() + this.getWidth()*2/3);
+			Integer portalIndex = gameLevel.playerCanSwitch(this.getCentre().getX() + this.getWidth()*5/8);
 			
 			if (portalIndex != -1 && !gameLevel.getPlayerOnUpper()) {
 				float switchMovement = gameLevel.getUpperFloor().getCentre().getY();
@@ -126,7 +126,7 @@ public class Player extends GameObject {
 		{
 			jumpingIterations = 0; // Cancel the jump
 			
-			Integer portalIndex = gameLevel.playerCanSwitch(this.getCentre().getX() + this.getWidth()*2/3);
+			Integer portalIndex = gameLevel.playerCanSwitch(this.getCentre().getX() + this.getWidth()*5/8);
 			if (portalIndex != -1 && gameLevel.getPlayerOnUpper()) {	
 				float switchMovement = gameLevel.getUpperFloor().getCentre().getY();
 				
