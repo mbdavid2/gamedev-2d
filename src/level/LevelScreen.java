@@ -71,6 +71,10 @@ public class LevelScreen {
 		this.enemies = enemies;
 	}
 	
+	public void clearEnemies() {
+		enemies.clear();
+	}
+	
 	public ArrayList<GameObject> getEnemies() {
 		return enemies;
 	}

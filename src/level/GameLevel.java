@@ -70,6 +70,11 @@ public class GameLevel {
 		return currentScreen.getEnemies();
 	}
 	
+	public void clearEnemies() {
+		currentScreen.clearEnemies();
+	}
+	
+	
 	public Integer getResWidth() {
 		return resWidth;
 	}

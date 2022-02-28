@@ -123,7 +123,7 @@ public class Player extends GameObject {
 					if (gameLevel.isPositionInPortal(portalIndex, obj.getCentre().getX())) {
 						// Be sure that the object is on the opposite side
 						if (gameLevel.getPlayerOnUpper() != obj.getObjectOnUpper()) {
-							obj.getCentre().ApplyVector(new Vector3f(0, -switchMovement, 0));
+							obj.getCentre().ApplyVector(new Vector3f(0, -switchMovement/2, 0));
 							obj.switchUpper();
 						}
 					}

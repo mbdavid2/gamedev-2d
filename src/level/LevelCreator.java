@@ -281,7 +281,9 @@ public class LevelCreator
 		ArrayList<LevelScreen> levelScreens = new ArrayList<LevelScreen>();
 		levelScreens.add(createLevel4Screen0());
 		levelScreens.add(createLevel4Screen1());
+		levelScreens.add(createLevel4Screen3());
 		levelScreens.add(createLevel4Screen2());
+
 		
 		return new GameLevel(levelScreens, 4);
 	}
@@ -367,6 +369,35 @@ public class LevelCreator
 		buttons.add(button);
 		
 		GameObject enemy = new GameObject("res/characters_flip.png", 90, 90, new Point3f(this.resWidth*8/10, this.resHeight*2/3, 0), false);
+		enemies.add(enemy);
+		
+		GameObject door = new GameObject("res/level/door.png", (int)(resWidth/11), (int)(resHeight/4.6), new Point3f(resWidth*7/8, doorLower, 0), false);
+		
+		LevelScreen levelScreen = new LevelScreen(lowerFloor, upperFloor, spikes, portals1, objects, obstacles, deathObjs, buttons, door);
+		levelScreen.setEnemies(enemies);
+		return levelScreen;
+	}
+	
+	public LevelScreen createLevel4Screen3() {
+		ArrayList<Portal> portals1 = new ArrayList<Portal>();
+		ArrayList<GameObject> obstacles= new ArrayList<GameObject>();
+		ArrayList<GameObject> objects = new ArrayList<GameObject>();
+		ArrayList<GameObject> deathObjs = new ArrayList<GameObject>();
+		ArrayList<GameObject> buttons = new ArrayList<GameObject>();
+		ArrayList<GameObject> enemies = new ArrayList<GameObject>();
+		
+		GameObject lowerFloor = new GameObject("res/level/floorLower.png", 1280, resHeight/8, new Point3f(resWidth/2, resHeight, 0));
+		GameObject upperFloor= new GameObject("res/level/floorUpper.png", 1280, resHeight/8, new Point3f(resWidth/2, resHeight/2, 0));
+		GameObject spikes = new GameObject("res/fire.png", 20, 20, new Point3f(0, resHeight/2, 0));
+		portals1.add(new Portal(resWidth*4/8, resWidth*7/8));
+		
+		GameObject button = new GameObject("res/crate.png", 70, 15, new Point3f(resWidth*3/8, resHeight - 70, 0), false);
+		buttons.add(button);
+		
+		GameObject fireFloor = new GameObject("res/lava_spr_strip45.png", resWidth/4, resHeight/5, new Point3f(resWidth*14/20, resHeight, 0));
+		deathObjs.add(fireFloor);
+		
+		GameObject enemy = new GameObject("res/characters_flip.png", 90, 90, new Point3f(this.resWidth*8/10, 0, 0), true);
 		enemies.add(enemy);
 		
 		GameObject door = new GameObject("res/level/door.png", (int)(resWidth/11), (int)(resHeight/4.6), new Point3f(resWidth*7/8, doorLower, 0), false);

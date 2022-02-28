@@ -454,7 +454,6 @@ public class Viewer extends JPanel {
 				int width = (int) obj.getWidth();
 				int height = (int) obj.getHeight();
 				g.drawImage(myImage, x,y, x+width, y+height, currentPositionInAnimation, 160, currentPositionInAnimation + 31, 192, null);
-				System.out.println(currentPositionInAnimation);
 			}			
 			
 		} catch (IOException e) {

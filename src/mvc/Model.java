@@ -128,7 +128,7 @@ public class Model {
 		if (nextScreen && gameLevel.getFinished()) {
 			System.out.println("Moving to level " + (currentLevel + 1));
 			currentLevel++;
-			if (currentLevel >= 4) {
+			if (currentLevel >= 5) {
 				gameFinished = true;
 			}
 			reset();
@@ -221,10 +221,19 @@ public class Model {
 		for (GameObject deathObj : gameLevel.getDeathObjs()) {
 			if (deathObj.getObjectOnUpper() == gameLevel.getPlayerOnUpper() && !player.isOnAir(gameLevel)) {
 				// Check same position
-				
 				if (player.getCentre().getX() + player.getWidth()*2/3 > deathObj.getCentre().getX() - deathObj.getWidth()/2 &&
 					player.getCentre().getX() + player.getWidth()*2/3 < deathObj.getCentre().getX() + deathObj.getWidth()/2) {
 					Controller.getInstance().setGameOver();
+				}
+			}
+			for (GameObject obj : gameLevel.getEnemies()) {
+				if (deathObj.getObjectOnUpper() == obj.getObjectOnUpper() && !obj.isObjOnAir(gameLevel)) {
+					// Check same position
+					if (obj.getCentre().getX() + obj.getWidth()*2/3 > deathObj.getCentre().getX() - deathObj.getWidth()/2 &&
+						obj.getCentre().getX() + obj.getWidth()*2/3 < deathObj.getCentre().getX() + deathObj.getWidth()/2) {
+						gameLevel.clearEnemies();
+						break;
+					}
 				}
 			}
 		}
