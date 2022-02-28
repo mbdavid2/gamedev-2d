@@ -4,6 +4,8 @@ import javax.imageio.ImageIO;
 import level.GameLevel;
 import mvc.Controller;
 
+//David Moreno Borràs 21200646
+
 public class Player extends GameObject {
 	private boolean canJumpAgain = true;
 	private int movingDirection = 0; // -1 left, 0 still, 1 right

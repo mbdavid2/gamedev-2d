@@ -43,7 +43,7 @@ public class Model {
 	 private CopyOnWriteArrayList<GameObject> EnemiesList  = new CopyOnWriteArrayList<GameObject>();
 	 private CopyOnWriteArrayList<GameObject> BulletList  = new CopyOnWriteArrayList<GameObject>();
 	 private int Score = 0; 
-	 private Integer currentLevel = 4; // The id of the level we start at
+	 private Integer currentLevel = 1; // The id of the level we start at
 	 private Integer deaths = 0;
 	 
 	private Integer resWidth;

@@ -3,6 +3,8 @@ import java.util.ArrayList;
 
 import util.GameObject;
 
+//David Moreno Borràs 21200646
+
 public class GameLevel {
 	
 	private final Integer resWidth = 1280;
