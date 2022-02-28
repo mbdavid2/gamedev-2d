@@ -316,34 +316,51 @@ public class Viewer extends JPanel {
 		try {
 			// Print the door
 			GameObject door = level.getDoor();
-			File openDoor = new File(door.getTexture());
-			File closedDoor = new File("res/level/doorWithBars.png");
-			Image doorImage = ImageIO.read(openDoor);
+			boolean open = true;
+		
+			Image doorImage;
 			
+			// Check buttons
 			for (GameObject obj : level.getButtons()) {
-				doorImage = ImageIO.read(closedDoor);
+				open = false;
 				if (obj.getIsPressed()) {
-					doorImage = ImageIO.read(openDoor);
+					open = true;
 				}
+			}
+			
+			// Check possible keys
+			if (level.hasKey() && !level.getPlayerHasKey()) {
+				open = false;
+			}
+			
+			
+			if (open) {
+				File openDoor = new File(door.getTexture());
+				doorImage = ImageIO.read(openDoor);
+				
+				// Print button prompt if first level
+				if (level.getCurrentIndex() == 0 && level.getLevelNumber() == 1) {
+					if (gameworld.getPlayer().isDoorAvailable(level)) {
+						if (Controller.getInstance().getWASDControl()) {
+							openDoor = new File("res/level/doorW.png");
+						}
+						else {
+							openDoor = new File("res/level/doorUp.png");
+						}
+						doorImage = ImageIO.read(openDoor);
+					}
+				}
+			}
+			else {
+				File closedDoor = new File("res/level/doorWithBars.png");
+				doorImage = ImageIO.read(closedDoor);
 			}
 			
 			int x = (int) door.getCentre().getX();
 			int y = (int) door.getCentre().getY();
 			g.drawImage(doorImage, x, y, x + door.getWidth(), y + door.getHeight(), 0, 0, 57, 77, null);
 			
-			// Print button prompt if first level
-			if (level.getCurrentIndex() == 0 && level.getLevelNumber() == 1) {
-				if (gameworld.getPlayer().isWithinDoor(level)) {
-					if (Controller.getInstance().getWASDControl()) {
-						openDoor = new File("res/level/doorW.png");
-					}
-					else {
-						openDoor = new File("res/level/doorUp.png");
-					}
-					doorImage = ImageIO.read(openDoor);
-					g.drawImage(doorImage, x, y, x + door.getWidth(), y + door.getHeight(), 0, 0, 57, 77, null);
-				}
-			}
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -384,6 +401,16 @@ public class Viewer extends JPanel {
 				int y = (int) obj.getCentre().getY();
 				if (obj.getIsPressed()) y = y + obj.getHeight()/2;
 				g.drawImage(myImageLower, x, y, x + obj.getWidth(), y + obj.getHeight(), 0, 0, 10, 10, null);
+			}
+			
+			// Print the keys
+			if (level.hasKey() && !level.getPlayerHasKey()) {
+				GameObject key = level.getKey();
+				TextureToLoad = new File(key.getTexture());
+				myImageLower = ImageIO.read(TextureToLoad);
+				int x = (int) key.getCentre().getX();
+				int y = (int) key.getCentre().getY();
+				g.drawImage(myImageLower, x, y, x + key.getWidth(), y + key.getHeight(), 0, 0, 564, 432, null);
 			}
 			
 			

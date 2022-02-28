@@ -43,7 +43,7 @@ public class Model {
 	 private CopyOnWriteArrayList<GameObject> EnemiesList  = new CopyOnWriteArrayList<GameObject>();
 	 private CopyOnWriteArrayList<GameObject> BulletList  = new CopyOnWriteArrayList<GameObject>();
 	 private int Score = 0; 
-	 private Integer currentLevel = 1;
+	 private Integer currentLevel = 2;
 	 private Integer deaths = 0;
 	 
 	private Integer resWidth;
@@ -108,6 +108,7 @@ public class Model {
 		fireLogic();
 //		objectLogic();
 		deathObjLogic();
+		keyLogic();
 		buttonLogic();
 		
 		// Reset the level if gameOver
@@ -138,6 +139,14 @@ public class Model {
 		}
 		return false;
 	}
+	
+	private void keyLogic() {
+		if (gameLevel.hasKey() && !gameLevel.getPlayerHasKey()) {
+			if (isPlayerOnObject(gameLevel.getKey())) {
+				gameLevel.setPlayerHasKey();
+			}
+		}
+	}
 
 	private void buttonLogic() {
 		for (GameObject button : gameLevel.getButtons()) {
@@ -152,14 +161,6 @@ public class Model {
 			button.setIsPressed(isPressed);
 		}
 	}
-	
-//	private void objectLogic() {
-//		for (GameObject obj : gameLevel.getObjects()) {
-//			if (isPlayerOnObject(obj)) {
-//				obj
-//			}
-//		}
-//	}
 
 	private void fireLogic() {
 		gameLevel.getSpikes().getCentre().ApplyVector(new Vector3f(1f, 0, 0));

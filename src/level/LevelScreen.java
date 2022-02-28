@@ -15,7 +15,10 @@ public class LevelScreen {
 	private ArrayList<GameObject> buttons = new ArrayList<GameObject>();
 	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	private ArrayList<GameObject> deathObjs = new ArrayList<GameObject>();
+	private GameObject key;
+	private boolean hasKey = false;
 	private GameObject door;
+	public boolean playerHasKey = false;
 	
 	private String name = "no_name";
 	
@@ -32,6 +35,41 @@ public class LevelScreen {
 		this.obstacles = obstacles;
 		this.deathObjs = deathObjs;
 		this.buttons = buttons;
+		this.playerHasKey = false;
+	}
+	
+	public LevelScreen(GameObject lowerFloor, GameObject upperFloor, GameObject spikes, 
+			   ArrayList<Portal> portals, ArrayList<GameObject> objects,
+			   ArrayList<GameObject> obstacles, ArrayList<GameObject> deathObjs, 
+			   ArrayList<GameObject> buttons, GameObject door, GameObject key) {
+		this.lowerFloor = lowerFloor;
+		this.upperFloor = upperFloor;
+		this.spikes = spikes;
+		this.portals = portals;
+		this.objects = objects;
+		this.door = door;
+		this.obstacles = obstacles;
+		this.deathObjs = deathObjs;
+		this.buttons = buttons;
+		this.key = key;
+		this.hasKey = true;
+		this.playerHasKey = false;
+		}
+	
+	public void setPlayerHasKey() {
+		playerHasKey = true;
+	}
+	
+	public boolean getPlayerHasKey() {
+		return playerHasKey;
+	}
+	
+	public boolean hasKey() {
+		return hasKey;
+	}
+	
+	public GameObject getKey() {
+		return key;
 	}
 	
 	public boolean hasName() {

@@ -43,6 +43,22 @@ public class GameLevel {
 		return currentScreen.getButtons();
 	}
 	
+	public boolean hasKey() {
+		return currentScreen.hasKey();
+	}
+	
+	public GameObject getKey() {
+		return currentScreen.getKey();
+	}
+	
+	public void setPlayerHasKey() {
+		currentScreen.setPlayerHasKey();
+	}
+	
+	public boolean getPlayerHasKey() {
+		return currentScreen.getPlayerHasKey();
+	}
+	
 	public Integer getResWidth() {
 		return resWidth;
 	}

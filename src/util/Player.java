@@ -47,7 +47,8 @@ public class Player extends GameObject {
 		return lastMovingDirection;
 	}
 	
-	public boolean isWithinDoor(GameLevel gamelevel) {
+	// Check for location and conditions
+	public boolean isDoorAvailable(GameLevel gamelevel) {
 		GameObject door = gamelevel.getDoor();
 		float doorLeft = door.getCentre().getX() - door.getWidth()/2;
 		float doorRight = door.getCentre().getX() + door.getWidth()/2;
@@ -60,6 +61,11 @@ public class Player extends GameObject {
 				doorOpen = true;
 			}
 		}
+		
+		if (gamelevel.hasKey() && gamelevel.getPlayerHasKey()) {
+			doorOpen = doorOpen && true;
+		}
+		else if (gamelevel.hasKey() && !gamelevel.getPlayerHasKey()) doorOpen = false;
 		
 		return doorOpen && sameLevel 
 			   && (getCentre().getX() - this.getWidth()*2/5 > doorLeft && getCentre().getX() - this.getWidth()*2/5 < doorRight);
@@ -75,7 +81,7 @@ public class Player extends GameObject {
 		Integer portalIndex = gameLevel.playerCanSwitch(this.getCentre().getX() + this.getWidth()*2/3);
 		if(Controller.getInstance().isKeyWPressed() && gameLevel.isDoorEnabled() && portalIndex == -1 && !movedNextLevel)
 		{	
-			if (isWithinDoor(gameLevel)) {
+			if (isDoorAvailable(gameLevel)) {
 //		    	System.out.println("Before:" + this.getCentre());
 				gameLevel.moveNextScreen();
 				resetPlayer(gameLevel);
