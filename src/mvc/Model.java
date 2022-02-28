@@ -43,11 +43,13 @@ public class Model {
 	 private CopyOnWriteArrayList<GameObject> EnemiesList  = new CopyOnWriteArrayList<GameObject>();
 	 private CopyOnWriteArrayList<GameObject> BulletList  = new CopyOnWriteArrayList<GameObject>();
 	 private int Score = 0; 
-	 private Integer currentLevel = 2;
+	 private Integer currentLevel = 1;
 	 private Integer deaths = 0;
 	 
 	private Integer resWidth;
 	private Integer resHeight;
+	
+	private boolean gameFinished = false;
 
    	public Model(Integer resWidth, Integer resHeight) {
 		//setup game world 
@@ -60,7 +62,6 @@ public class Model {
 		player = new Player("res/characters_flip.png", 90, 90, new Point3f(this.resWidth/4, this.resHeight*2/3, 0), false);
 		
 		Controller.getInstance().reset();
-		
 	}
 	
 	public void reset() {
@@ -103,7 +104,7 @@ public class Model {
 //		System.out.println(gameLevel.getCurrentIndex());
 		// Player Logic first 
 //		System.out.println("Player now: " + player.getCentre());
-		playerLogic(); 
+		boolean nextScreen = playerLogic(); 
 			
 		fireLogic();
 //		objectLogic();
@@ -117,15 +118,27 @@ public class Model {
 			reset();
 		}
 		
+		if (nextScreen) {
+			System.out.println("Next screen");
+		}
+		
 		// If we have finished the level, move to the next
-		if (gameLevel.getCurrentIndex() == -1) {
+		if (nextScreen && gameLevel.getFinished()) {
+			System.out.println("Current level: " + currentLevel);
 			System.out.println("Moving to next level");
 			currentLevel++;
+			if (currentLevel >= 2) {
+				gameFinished = true;
+			}
 			reset();
 		}
 		
 		if (Controller.getInstance().getGameOverPrinted()) return false;
 		return Controller.getInstance().getGameOver();
+	}
+	
+	public boolean getGameFinished() {
+		return gameFinished;
 	}
 	
 	private boolean isPlayerOnObject(GameObject obj) {
@@ -163,7 +176,7 @@ public class Model {
 	}
 
 	private void fireLogic() {
-		gameLevel.getSpikes().getCentre().ApplyVector(new Vector3f(1f, 0, 0));
+		gameLevel.getSpikes().getCentre().ApplyVector(new Vector3f(0.75f, 0, 0));
 		if (gameLevel.getSpikes().getCentre().getX() > player.getCentre().getX() - player.getWidth()/2) {
 			Controller.getInstance().setGameOver();
 		}
@@ -182,8 +195,8 @@ public class Model {
 		}
 	}
 	
-	private void playerLogic() {
-		player.playerLogic(gameLevel);	
+	private boolean playerLogic() {
+		return player.playerLogic(gameLevel);	
 	}
 
 	public Player getPlayer() {

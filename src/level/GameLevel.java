@@ -16,6 +16,8 @@ public class GameLevel {
 	
 	private Integer levelNumber = 1;
 	
+	private boolean finished = false;
+	
 	public Integer getCurrentIndex() {
 		return currentScreenIndex;
 	}
@@ -87,11 +89,22 @@ public class GameLevel {
 		currentScreen.setPlayerOnUpper(playerOnUpper);
 	}
 	
+	public boolean getFinished() {
+		return finished;
+	}
+	
 	public void moveNextScreen() {
 		portalsEnabled = false;
 		currentScreenIndex++;
-		if (currentScreenIndex >= screens.size()) currentScreenIndex = -1;
-		updateCurrentScreen();
+		currentScreen.resetScreen();
+		if (currentScreenIndex == -1 || currentScreenIndex >= screens.size()) {
+			finished = true;
+			System.out.println("No more screens in this level!!");
+			currentScreenIndex = -1;
+		}
+		else updateCurrentScreen();
+		System.out.println("Finished:" + finished);
+		System.out.println("-------------------------------");
 		portalsEnabled = true;
 	}
 	
@@ -109,10 +122,7 @@ public class GameLevel {
 	
 	private void updateCurrentScreen() {
 		System.out.println("Moving to screen " + (currentScreenIndex+1) + " out of " + screens.size());
-		if (currentScreenIndex != -1) {
-			currentScreen = screens.get(currentScreenIndex);
-		}
-		else System.out.println("No more screens in this level!!");
+		currentScreen = screens.get(currentScreenIndex);
 	}
 	
 	public ArrayList<Portal> getPortals() {

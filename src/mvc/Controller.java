@@ -106,6 +106,11 @@ public class Controller implements KeyListener {
 	public void reset() {
 		gameOver = false;
 		gameOverPrinted = false;
+		KeyAPressed= false;
+		KeySPressed= false;
+		KeyDPressed= false;
+		KeyWPressed= false;
+		KeySpacePressed= false;
 	}
 	
 	public void setGameOver() {

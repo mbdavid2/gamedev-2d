@@ -59,6 +59,7 @@ public class MainWindow {
 	 private   JLabel BackgroundImageForStartMenu ;
 	 private   JLabel BackgroundImageForCreditsMenu ;
 	 private static String buttonMessage = "Start Game";
+	 private static boolean gameHasFinished = false;
 		
 	public MainWindow() {
 	        frame.setSize(resWidth, resHeight);  // you can customise this later and adapt it to change on size.  
@@ -79,36 +80,42 @@ public class MainWindow {
 					BackgroundImageForStartMenu.setVisible(false); 
 					canvas.setVisible(true);
 					canvas.addKeyListener(Controller);    //adding the controller to the Canvas  
-	            canvas.requestFocusInWindow();   // making sure that the Canvas is in focus so keyboard input will be taking in .
+					canvas.requestFocusInWindow();   // making sure that the Canvas is in focus so keyboard input will be taking in .
 					startGame=true;
 				}});  
-	        startMenuButton.setBounds(540, 500, 200, 40);
+	        startMenuButton.setBounds((int)(resWidth/2.5f), 500, 200, 40);
 	        startMenuButton.setVisible(true);
 	        
 	        // Credits button 
-	        JButton creditsMenuButton = new JButton("Credits");
-	        creditsMenuButton.addActionListener(new ActionListener()
-	           { 
-				@Override
-				public void actionPerformed(ActionEvent e) { 
-					creditsMenuButton.setVisible(false);
-					BackgroundImageForStartMenu.setVisible(false); 
-					BackgroundImageForCreditsMenu.setVisible(true); 
-				}});  
-	        creditsMenuButton.setBounds(540, 550, 200, 40);
-	        creditsMenuButton.setVisible(true);
+	        if (!gameHasFinished) {
+		        JButton creditsMenuButton = new JButton("Credits");
+		        creditsMenuButton.addActionListener(new ActionListener()
+		           { 
+					@Override
+					public void actionPerformed(ActionEvent e) { 
+						creditsMenuButton.setVisible(false);
+						BackgroundImageForStartMenu.setVisible(false); 
+						BackgroundImageForCreditsMenu.setVisible(true); 
+					}});  
+		        creditsMenuButton.setBounds((int)(resWidth/2.5f), 550, 200, 40);
+		        creditsMenuButton.setVisible(true);
+		        frame.add(creditsMenuButton); 
+	        }
 	        
 	        frame.add(startMenuButton);
-		    frame.add(creditsMenuButton); 
 		    frame.setVisible(true);  
 	        
 //	        startMenuButton.setBackground(Color.BLUE);
 	        
-	        //loading background image 
-	        File BackroundToLoad = new File("res/title-screen-2.png");  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
+	        //loading background image
+		    String titleScreen = "res/title-screen-2.png";
+		    if (gameHasFinished) {
+		    	titleScreen = "res/end-screen.png";
+		    }
+	        File BackroundToLoad = new File(titleScreen);  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
 	        File BackroundCredits = new File("res/credits-screen.png");
 	        try {
-				 
+	        	System.out.println("Printing again");
 				 BufferedImage myPicture = ImageIO.read(BackroundToLoad);
 				 BackgroundImageForStartMenu = new JLabel(new ImageIcon(myPicture));
 				 BackgroundImageForStartMenu.setBounds(0, 0, resWidth, resHeight);
@@ -140,16 +147,31 @@ public class MainWindow {
 			long FrameCheck = System.currentTimeMillis() + (long) TimeBetweenFrames; 
 			
 			//wait till next time step 
-		 while (FrameCheck > System.currentTimeMillis()){} 
+			while (FrameCheck > System.currentTimeMillis()){} 
 			
 			
-			if(startGame && !gameOver) {
+			if(startGame && !gameOver && !gameHasFinished) {
 				gameOver = gameloop();
 				gameOver = false;
+				gameHasFinished = gameworld.getGameFinished();
 			}
 			
 			//UNIT test to see if framerate matches 
-		 UnitTests.CheckFrameRate(System.currentTimeMillis(),FrameCheck, TargetFPS);
+			UnitTests.CheckFrameRate(System.currentTimeMillis(),FrameCheck, TargetFPS);
+			
+			if (gameHasFinished && startGame) {
+				startGame = false;
+				System.out.println("Game has finished");
+				buttonMessage = "Restart";
+				frame.dispose();
+				frame = new JFrame("Game");
+				gameworld = new Model(resWidth, resHeight);
+				canvas = new Viewer(gameworld);
+//				BackgroundImageForStartMenu.setVisible(false); 
+//				canvas.setVisible(false);
+				hello = new MainWindow();
+				gameHasFinished = false;
+			}
 		 
 //		 boolean gameOverDone = false;
 //		 

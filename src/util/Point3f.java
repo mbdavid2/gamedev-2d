@@ -107,14 +107,14 @@ public class Point3f {
 
 	private float CheckBoundary(float f) {
 		if (f<0) f=0.0f;
-		if (f>boundary)f=(float) boundary;
+		if (f>boundary*19/20)f=(float) boundary*19/20;
 		return f;
 	}
 	
 	private float CheckBoundary(float f, ArrayList<GameObject> obstacles, boolean playerOnUpper, 
 								int lastMovingDirection, float current) {
 		if (f<0) f=0.0f;
-		if (f>boundary)f=(float) boundary;
+		if (f> boundary*19/20)f=(float) boundary*19/20;
 		
 		// Check for obstacles too
 		for (GameObject obj : obstacles) {

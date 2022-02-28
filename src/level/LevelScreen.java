@@ -2,6 +2,7 @@ package level;
 import java.util.ArrayList;
 
 import util.GameObject;
+import util.Point3f;
 
 public class LevelScreen {
 	private GameObject lowerFloor;
@@ -15,6 +16,7 @@ public class LevelScreen {
 	private ArrayList<GameObject> buttons = new ArrayList<GameObject>();
 	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	private ArrayList<GameObject> deathObjs = new ArrayList<GameObject>();
+	private Point3f originalSpikeCenter;
 	private GameObject key;
 	private boolean hasKey = false;
 	private GameObject door;
@@ -36,6 +38,8 @@ public class LevelScreen {
 		this.deathObjs = deathObjs;
 		this.buttons = buttons;
 		this.playerHasKey = false;
+		Point3f centre = spikes.getCentre();
+		this.originalSpikeCenter = new Point3f(centre.getX(), centre.getY(), centre.getZ()).copy();
 	}
 	
 	public LevelScreen(GameObject lowerFloor, GameObject upperFloor, GameObject spikes, 
@@ -54,7 +58,13 @@ public class LevelScreen {
 		this.key = key;
 		this.hasKey = true;
 		this.playerHasKey = false;
-		}
+		Point3f centre = spikes.getCentre();
+		this.originalSpikeCenter = new Point3f(centre.getX(), centre.getY(), centre.getZ()).copy();
+	}
+	
+	public void resetScreen() {
+		spikes.setCentre(this.originalSpikeCenter.copy());
+	}
 	
 	public void setPlayerHasKey() {
 		playerHasKey = true;

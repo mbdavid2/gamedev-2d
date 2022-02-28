@@ -53,7 +53,6 @@ public class Viewer extends JPanel {
 	private long currentAnimationTime= 0; 
 	private final String portalTexture = "res/level/floorLower.png";
 	private Integer lvNameFrame = 0;
-	private boolean resetGameOver = true;
 	private Integer currentScreenIndex = 0;
 	
 	Model gameworld = new Model(1280, 720); 
@@ -69,7 +68,6 @@ public class Viewer extends JPanel {
 	public Viewer(Model World) {
 		this.gameworld=World;
 		lvNameFrame = 0;
-		resetGameOver = true;
 		currentScreenIndex = 0;
 		currentAnimationTime = 0;
 		// TODO Auto-generated constructor stub
