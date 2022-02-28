@@ -118,6 +118,17 @@ public class Player extends GameObject {
 					}
 				}
 				
+				// Switch the enemies in the range
+				for (GameObject obj : gameLevel.getEnemies()) {
+					if (gameLevel.isPositionInPortal(portalIndex, obj.getCentre().getX())) {
+						// Be sure that the object is on the opposite side
+						if (gameLevel.getPlayerOnUpper() != obj.getObjectOnUpper()) {
+							obj.getCentre().ApplyVector(new Vector3f(0, -switchMovement, 0));
+							obj.switchUpper();
+						}
+					}
+				}
+				
 				if (gameLevel.hasKey() && !gameLevel.getPlayerHasKey()) {
 					GameObject obj = gameLevel.getKey();
 					if (gameLevel.isPositionInPortal(portalIndex, obj.getCentre().getX())) {
@@ -151,6 +162,17 @@ public class Player extends GameObject {
 				
 				// Switch the objects in the range
 				for (GameObject obj : gameLevel.getObjects()) {
+					if (gameLevel.isPositionInPortal(portalIndex, obj.getCentre().getX())) {
+						// Be sure that the object is on the opposite side
+						if (gameLevel.getPlayerOnUpper() != obj.getObjectOnUpper()) {
+							obj.getCentre().ApplyVector(new Vector3f(0, switchMovement, 0));
+							obj.switchUpper();
+						}
+					}
+				}
+				
+				// Switch the enemies in the range
+				for (GameObject obj : gameLevel.getEnemies()) {
 					if (gameLevel.isPositionInPortal(portalIndex, obj.getCentre().getX())) {
 						// Be sure that the object is on the opposite side
 						if (gameLevel.getPlayerOnUpper() != obj.getObjectOnUpper()) {
