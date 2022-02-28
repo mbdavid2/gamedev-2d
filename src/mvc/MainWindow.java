@@ -57,6 +57,7 @@ public class MainWindow {
 	 private static   int TargetFPS = 100;
 	 private static boolean startGame= false; 
 	 private   JLabel BackgroundImageForStartMenu ;
+	 private   JLabel BackgroundImageForCreditsMenu ;
 	 private static String buttonMessage = "Start Game";
 		
 	public MainWindow() {
@@ -65,10 +66,11 @@ public class MainWindow {
 	        frame.setLayout(null);
 	        frame.add(canvas);  
 	        canvas.setBounds(0, 0, resWidth, resHeight); 
-			   canvas.setBackground(new Color(255,255,255)); //white background  replaced by Space background but if you remove the background method this will draw a white screen 
-		      canvas.setVisible(false);   // this will become visible after you press the key. 
+			canvas.setBackground(new Color(255,255,255)); //white background  replaced by Space background but if you remove the background method this will draw a white screen 
+		    canvas.setVisible(false);   // this will become visible after you press the key. 
 		          
-	        JButton startMenuButton = new JButton(buttonMessage);  // start button 
+		    // Start button 
+	        JButton startMenuButton = new JButton(buttonMessage);
 	        startMenuButton.addActionListener(new ActionListener()
 	           { 
 				@Override
@@ -80,39 +82,50 @@ public class MainWindow {
 	            canvas.requestFocusInWindow();   // making sure that the Canvas is in focus so keyboard input will be taking in .
 					startGame=true;
 				}});  
-	        startMenuButton.setBounds(540, 500, 200, 40); 
+	        startMenuButton.setBounds(540, 500, 200, 40);
+	        startMenuButton.setVisible(true);
+	        
+	        // Credits button 
+	        JButton creditsMenuButton = new JButton("Credits");
+	        creditsMenuButton.addActionListener(new ActionListener()
+	           { 
+				@Override
+				public void actionPerformed(ActionEvent e) { 
+					creditsMenuButton.setVisible(false);
+					BackgroundImageForStartMenu.setVisible(false); 
+					BackgroundImageForCreditsMenu.setVisible(true); 
+				}});  
+	        creditsMenuButton.setBounds(540, 550, 200, 40);
+	        creditsMenuButton.setVisible(true);
+	        
+	        frame.add(startMenuButton);
+		    frame.add(creditsMenuButton); 
+		    frame.setVisible(true);  
 	        
 //	        startMenuButton.setBackground(Color.BLUE);
 	        
 	        //loading background image 
-	        File BackroundToLoad = new File("res/title-screen.png");  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
-			try {
+	        File BackroundToLoad = new File("res/title-screen-2.png");  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
+	        File BackroundCredits = new File("res/credits-screen.png");
+	        try {
 				 
 				 BufferedImage myPicture = ImageIO.read(BackroundToLoad);
 				 BackgroundImageForStartMenu = new JLabel(new ImageIcon(myPicture));
 				 BackgroundImageForStartMenu.setBounds(0, 0, resWidth, resHeight);
 				frame.add(BackgroundImageForStartMenu); 
+				
+				myPicture = ImageIO.read(BackroundCredits);
+				BackgroundImageForCreditsMenu = new JLabel(new ImageIcon(myPicture));
+				 BackgroundImageForCreditsMenu.setBounds(0, 0, resWidth, resHeight);
+				frame.add(BackgroundImageForCreditsMenu); 
+				BackgroundImageForCreditsMenu.setVisible(false); 
 			}  catch (IOException e) { 
 				e.printStackTrace();
 			}   
 			 
-	       frame.add(startMenuButton);  
+	
 	       
-//	       JPanel panel = new JPanel();
-////	       panel.setLocation(150, 150);
-//	       JLabel label = new JLabel("Your text here");
-//	       label.setFont(new Font("UPHEAVAL TT -BRK-", Font.BOLD, 70)); 
-////	       label.setColor(Color.BLACK);
-//	       label.setVisible(true);
-//	       panel.add(label);
-//	       panel.setBounds(240, 200, 200, 40); 
-//	       panel.setVisible(true);
-//	       frame.add(panel);
-	       
-	       frame.setVisible(true);  
-	       System.out.println("Done");
-	      
-//	       Viewer.printText("Working Title", resWidth/2, resHeight/2, frame.getGraphics(), 4);
+
 	}
 
 	public static void main(String[] args) {

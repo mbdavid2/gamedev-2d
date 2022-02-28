@@ -55,6 +55,10 @@ public class Controller implements KeyListener {
 	public void keyTyped(KeyEvent e) { 
 		 
 	}
+	
+	public boolean getWASDControl() {
+		return WasdControll;
+	}
 
 	@Override
 	public void keyPressed(KeyEvent e) 
@@ -87,6 +91,11 @@ public class Controller implements KeyListener {
 				case KeyEvent.VK_DOWN: setKeySPressed(true);break;
 				case KeyEvent.VK_UP: setKeyWPressed(true);break;
 				case KeyEvent.VK_RIGHT: setKeyDPressed(true);break;
+				case 'c':setWASDControll(true);break;
+				case 'C':setWASDControll(true);break;
+				case 'v':setWASDControll(false);break;
+				case 'V':setWASDControll(false);break;
+				case ' ':setKeySpacePressed(true);break;   
 			    default:
 			    	//System.out.println("Controller test:  Unknown key pressed");
 			        break;
@@ -143,6 +152,7 @@ public class Controller implements KeyListener {
 				case KeyEvent.VK_DOWN: setKeySPressed(false);break;
 				case KeyEvent.VK_UP: setKeyWPressed(false);break;
 				case KeyEvent.VK_RIGHT: setKeyDPressed(false);break;
+				case ' ':setKeySpacePressed(false);break;   
 			    default:
 			    	//System.out.println("Controller test:  Unknown key pressed");
 			        break;
