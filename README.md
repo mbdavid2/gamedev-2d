@@ -1,3 +1,7 @@
-# The wall is Lava 2D game made using a Java Library for uni
+# The Wall is Lava
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/BdZYC88v5SE?si=2oRUTimoJsVg9eQZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+A 2D game made using a Java Library for uni
+
+Demo video:
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/BdZYC88v5SE/0.jpg)](https://www.youtube.com/watch?v=BdZYC88v5SE)
